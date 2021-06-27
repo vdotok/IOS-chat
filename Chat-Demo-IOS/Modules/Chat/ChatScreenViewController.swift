@@ -58,9 +58,13 @@ public class ChatScreenViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewModelWillAppear()
+        
         iqKeyBoard(isEnable: false)
     }
-    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToBottom()
+    }
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         iqKeyBoard(isEnable: true)
@@ -133,7 +137,7 @@ public class ChatScreenViewController: UIViewController {
     }
     
     @IBAction func didTapImage(_ sender: UIButton) {
-        imagePicker.action(for: .photoLibrary)
+        imagePicker.action(for: .savedPhotosAlbum)
         
     }
     
@@ -489,10 +493,7 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                             self.blurView.isHidden = true
                           })
         presentedViewController?.dismiss(animated: true, completion: nil)
-//        case image
-//        case audio
-//        case video
-//        case file
+
         var mediaType: MediaType = .file
         if fileExtension == "MP4" {
             mediaType = .video

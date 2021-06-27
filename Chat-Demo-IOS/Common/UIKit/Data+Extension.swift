@@ -15,7 +15,7 @@ extension Date {
     var toTimeString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = DateFormatter.Style.short
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = "h:mm"
         dateFormatter.timeZone = .current
         return dateFormatter.string(from: self)
     }

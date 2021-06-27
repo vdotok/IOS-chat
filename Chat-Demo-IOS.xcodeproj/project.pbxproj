@@ -133,8 +133,8 @@
 		5DDC5C7A26567A7900663338 /* CreateGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7526567A7900663338 /* CreateGroupViewModel.swift */; };
 		5DDC5C8026567D9700663338 /* CreateGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7E26567D9700663338 /* CreateGroupCell.swift */; };
 		5DDC5C8126567D9700663338 /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7F26567D9700663338 /* CreateGroupCell.xib */; };
-		5DE6780D2687C4D3008C05E4 /* iOSSDKConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */; };
-		5DE6780E2687C4D3008C05E4 /* iOSSDKConnect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5DE686D3268874E30010A4D1 /* iOSSDKConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE686D0268874CA0010A4D1 /* iOSSDKConnect.framework */; };
+		5DE686D4268874E30010A4D1 /* iOSSDKConnect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE686D0268874CA0010A4D1 /* iOSSDKConnect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DF35FD226550966000EB9ED /* OutgoingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF35FD026550966000EB9ED /* OutgoingTextCell.swift */; };
 		5DF35FD326550966000EB9ED /* OutgoingTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DF35FD126550966000EB9ED /* OutgoingTextCell.xib */; };
 		5DF35FD826550974000EB9ED /* IncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF35FD626550974000EB9ED /* IncomingTextCell.swift */; };
@@ -167,16 +167,16 @@
 			remoteGlobalIDString = 0080172025482C730094136E;
 			remoteInfo = MqttClientTests;
 		};
-		5DE678092687C4B3008C05E4 /* PBXContainerItemProxy */ = {
+		5DE686CF268874CA0010A4D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+			containerPortal = 5DE686CA268874CA0010A4D1 /* iOSSDKConnect.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0080171725482C730094136E;
 			remoteInfo = iOSSDKConnect;
 		};
-		5DE6780B2687C4B3008C05E4 /* PBXContainerItemProxy */ = {
+		5DE686D1268874CA0010A4D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+			containerPortal = 5DE686CA268874CA0010A4D1 /* iOSSDKConnect.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0080172025482C730094136E;
 			remoteInfo = iOSSDKConnectTests;
@@ -190,7 +190,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5DE6780E2687C4D3008C05E4 /* iOSSDKConnect.framework in Embed Frameworks */,
+				5DE686D4268874E30010A4D1 /* iOSSDKConnect.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,7 +327,7 @@
 		5DDC5C7526567A7900663338 /* CreateGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewModel.swift; sourceTree = "<group>"; };
 		5DDC5C7E26567D9700663338 /* CreateGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupCell.swift; sourceTree = "<group>"; };
 		5DDC5C7F26567D9700663338 /* CreateGroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
-		5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iOSSDKConnect.xcodeproj; path = "../../../../Backup/chatsdk-ios/iOSSDKConnect.xcodeproj"; sourceTree = "<group>"; };
+		5DE686CA268874CA0010A4D1 /* iOSSDKConnect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iOSSDKConnect.xcodeproj; path = "../../../../Norgic/ios-sdk-connect/iOSSDKConnect.xcodeproj"; sourceTree = "<group>"; };
 		5DF35FD026550966000EB9ED /* OutgoingTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTextCell.swift; sourceTree = "<group>"; };
 		5DF35FD126550966000EB9ED /* OutgoingTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingTextCell.xib; sourceTree = "<group>"; };
 		5DF35FD626550974000EB9ED /* IncomingTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingTextCell.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DE6780D2687C4D3008C05E4 /* iOSSDKConnect.framework in Frameworks */,
+				5DE686D3268874E30010A4D1 /* iOSSDKConnect.framework in Frameworks */,
 				5D57CD5526848F8900873AC2 /* Pods_Chat_Demo_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -590,7 +590,7 @@
 		5D57DAC72642964700515FEA /* Chat-Demo-IOS */ = {
 			isa = PBXGroup;
 			children = (
-				5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */,
+				5DE686CA268874CA0010A4D1 /* iOSSDKConnect.xcodeproj */,
 				5D57CD97268650BF00873AC2 /* vdotokCert.p12 */,
 				5D44E48C264481E8009F8123 /* Common */,
 				5D41C9172643454700D33DAA /* Model */,
@@ -715,11 +715,11 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		5DE678052687C4B3008C05E4 /* Products */ = {
+		5DE686CB268874CA0010A4D1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */,
-				5DE6780C2687C4B3008C05E4 /* iOSSDKConnectTests.xctest */,
+				5DE686D0268874CA0010A4D1 /* iOSSDKConnect.framework */,
+				5DE686D2268874CA0010A4D1 /* iOSSDKConnectTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -845,8 +845,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5DE678052687C4B3008C05E4 /* Products */;
-					ProjectRef = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+					ProductGroup = 5DE686CB268874CA0010A4D1 /* Products */;
+					ProjectRef = 5DE686CA268874CA0010A4D1 /* iOSSDKConnect.xcodeproj */;
 				},
 				{
 					ProductGroup = 18D01BF62686145B00DE549A /* Products */;
@@ -875,18 +875,18 @@
 			remoteRef = 18D01BFC2686145B00DE549A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */ = {
+		5DE686D0268874CA0010A4D1 /* iOSSDKConnect.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = iOSSDKConnect.framework;
-			remoteRef = 5DE678092687C4B3008C05E4 /* PBXContainerItemProxy */;
+			remoteRef = 5DE686CF268874CA0010A4D1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5DE6780C2687C4B3008C05E4 /* iOSSDKConnectTests.xctest */ = {
+		5DE686D2268874CA0010A4D1 /* iOSSDKConnectTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = iOSSDKConnectTests.xctest;
-			remoteRef = 5DE6780B2687C4B3008C05E4 /* PBXContainerItemProxy */;
+			remoteRef = 5DE686D1268874CA0010A4D1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
