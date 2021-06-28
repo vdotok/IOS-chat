@@ -301,6 +301,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.url = item.0.fileType!
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             cell.delegate = self
+            cell.userName.text = item.0.sender
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
         
@@ -320,6 +321,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             cell.configure(with: item.0.fileType)
+            cell.userName.text = item.0.sender
             return cell
         case .outGoingImage:
             let cell = tableView.dequeueReusableCell(withIdentifier: "outgoingImageCell", for: indexPath) as! outgoingImageCell

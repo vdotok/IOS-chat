@@ -17,12 +17,17 @@ class IncomingAttachmentCell: UITableViewCell {
     @IBOutlet weak var attachmentButton: UIButton!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var userName: UILabel!
+    
+    
     
     var url = URL(fileURLWithPath: "")
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         containerView.layer.cornerRadius = 8
+        userName.font = UIFont(name: "Inter-Regular", size: 14)
+        userName.textColor = .appDarkGreenColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

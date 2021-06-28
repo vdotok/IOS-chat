@@ -146,6 +146,7 @@ class GroupsViewModelImpl: GroupsViewModel {
         setDelegate()
     }
     
+    
     func setDelegate(){
         mqttClient?.setFileDelegate(fileDelegate: self)
     }
