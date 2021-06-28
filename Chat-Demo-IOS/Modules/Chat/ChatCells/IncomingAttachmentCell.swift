@@ -18,9 +18,7 @@ class IncomingAttachmentCell: UITableViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var userName: UILabel!
-    
-    
-    
+
     var url = URL(fileURLWithPath: "")
     override func awakeFromNib() {
         super.awakeFromNib()

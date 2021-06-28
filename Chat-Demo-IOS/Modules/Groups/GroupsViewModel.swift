@@ -336,8 +336,8 @@ extension GroupsViewModelImpl: MessageDelegate {
             
             tempMessages = messages[topic] ?? []
             unreadMessages = self.unreadMessages[topic] ?? []
-            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: 1622801248314 ))
-            unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: 1622801248314 ))
+            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
+            unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
             messages[topic] = tempMessages
             self.unreadMessages[topic] = unreadMessages
           
@@ -463,8 +463,7 @@ extension GroupsViewModelImpl: FileDelegate {
     func didReceive(file: FilePart, fileURL: URL, date: UInt64) {
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
         let data = Data(bytes: file.content, count: file.content.count)
-        let image =  UIImage(data: data)
-        let message = ChatMessage(id: file.messageId, sender: file.from, content: "", status: .delivered, mediaType: MediaType(rawValue: file.type), date: 0)
+        let message = ChatMessage(id: file.messageId, sender: file.from, content: "", status: .delivered, mediaType: MediaType(rawValue: file.type), date: date)
         message.fileType = fileURL
         
         var tempMessages: [ChatMessage] = []
@@ -473,7 +472,7 @@ extension GroupsViewModelImpl: FileDelegate {
         unreadMessages = self.unreadMessages[file.topic ?? ""] ?? []
         tempMessages = messages[file.topic ?? ""] ?? []
         tempMessages.append(message)
-        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: 1622801248314 ))
+        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date ))
         messages[file.topic ?? ""] = tempMessages
         self.unreadMessages[file.topic ?? ""] = unreadMessages
         let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.fullName!, topic: file.topic ?? "")

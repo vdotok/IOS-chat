@@ -18,7 +18,8 @@ class IncomingImageCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         containerView.layer.cornerRadius = 8
-
+        userName.font = UIFont(name: "Inter-Regular", size: 14)
+        userName.textColor = .appDarkGreenColor
     }
 
     

@@ -71,6 +71,7 @@
                 <outlet property="chatImage" destination="P3p-8O-sDy" id="7An-IP-pao"/>
                 <outlet property="containerView" destination="Mp2-3m-zvN" id="kvJ-4H-hZI"/>
                 <outlet property="timeLabel" destination="Qtr-fP-VHb" id="F9k-4z-Va3"/>
+                <outlet property="userName" destination="ISR-5O-q60" id="PrZ-6s-yOY"/>
             </connections>
             <point key="canvasLocation" x="15.942028985507248" y="63.616071428571423"/>
         </tableViewCell>

@@ -32,7 +32,7 @@
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDt-jU-kre">
                         <rect key="frame" x="20" y="32" width="150" height="80"/>
-                        <color key="backgroundColor" red="0.95107084509999995" green="0.90611344579999997" blue="0.40772271160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="EXh-2f-tZ9"/>
                         </constraints>
@@ -76,6 +76,7 @@
             <connections>
                 <outlet property="containerView" destination="hPj-A2-0s6" id="5Ik-SY-klm"/>
                 <outlet property="timeLabel" destination="sBS-wv-lVo" id="NV0-tJ-OYK"/>
+                <outlet property="userName" destination="tOG-nC-dLW" id="ImN-hT-MUd"/>
             </connections>
             <point key="canvasLocation" x="11.594202898550726" y="38.504464285714285"/>
         </tableViewCell>
