@@ -439,7 +439,7 @@ extension GroupsViewModelImpl {
             lastMessage = "Misread messages"
         }
         else {
-                lastMessage = topic?.last?.content ?? ""
+                lastMessage = topic?.last?.content ?? "Attachment"
         }
         
         let group = TempGroup(group: groups[row], unReadMessageCount: unReadmessages?.count ?? 0, lastMessage: lastMessage, presentParticipant: present?.count ?? 0)
