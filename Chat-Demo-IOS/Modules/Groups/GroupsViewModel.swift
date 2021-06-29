@@ -438,8 +438,15 @@ extension GroupsViewModelImpl {
         if unReadmessages?.count ?? 0 >= 1 {
             lastMessage = "Misread messages"
         }
+        
         else {
-                lastMessage = topic?.last?.content ?? "Attachment"
+            if let message = topic?.last?.content {
+                lastMessage = message
+            }
+            if let _ = topic?.last?.fileType {
+                lastMessage = "Attachment"
+            }
+               
         }
         
         let group = TempGroup(group: groups[row], unReadMessageCount: unReadmessages?.count ?? 0, lastMessage: lastMessage, presentParticipant: present?.count ?? 0)

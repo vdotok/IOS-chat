@@ -112,7 +112,9 @@ public class ChatScreenViewController: UIViewController {
     
     @IBAction func didTapSend(_ sender: UIButton) {
         
-        if messageTextField.text.count != 0 {
+        let messageText = messageTextField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if messageText.count != 0 {
             viewModel.sendMessage(text: messageTextField.text!)
             self.messageTextField.text = ""
             self.messageTextField.checkPlaceholder()
@@ -360,6 +362,13 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
 
 extension ChatScreenViewController: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
+        
+        guard textView.text.count < 400 else {
+            sendMessageButton.isEnabled = false
+            return
+        }
+        
+        
         let height = textView.contentSize.height
         DispatchQueue.main.async {
             if height < 100 {
@@ -367,9 +376,11 @@ extension ChatScreenViewController: UITextViewDelegate {
             }
             textView.checkPlaceholder()
         }
-        if textView.text.isEmpty {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            
             sendMessageButton.tintColor = .appDarkGray
         } else {
+            sendMessageButton.isEnabled = true
             sendMessageButton.tintColor = .appGreenColor
         }
        
