@@ -89,6 +89,11 @@ extension LoginViewController: UITextFieldDelegate {
         if range.location == 0 && string == " " {
             return false
         }
+        if textField == password {
+            if text.count > 14 {
+                return false
+            }
+        }
         return true
     }
 }
