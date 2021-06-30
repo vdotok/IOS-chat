@@ -58,9 +58,13 @@ public class ChatScreenViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.viewModelWillAppear()
+        
         iqKeyBoard(isEnable: false)
     }
-    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToBottom()
+    }
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         iqKeyBoard(isEnable: true)
@@ -108,7 +112,9 @@ public class ChatScreenViewController: UIViewController {
     
     @IBAction func didTapSend(_ sender: UIButton) {
         
-        if messageTextField.text.count != 0 {
+        let messageText = messageTextField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if messageText.count != 0 {
             viewModel.sendMessage(text: messageTextField.text!)
             self.messageTextField.text = ""
             self.messageTextField.checkPlaceholder()
@@ -133,7 +139,7 @@ public class ChatScreenViewController: UIViewController {
     }
     
     @IBAction func didTapImage(_ sender: UIButton) {
-        imagePicker.action(for: .photoLibrary)
+        imagePicker.action(for: .savedPhotosAlbum)
         
     }
     
@@ -297,6 +303,8 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.url = item.0.fileType!
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             cell.delegate = self
+            guard let user = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
+            cell.userName.text = user.fullName
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
         
@@ -316,6 +324,8 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             cell.configure(with: item.0.fileType)
+            guard let user = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
+            cell.userName.text = user.fullName
             return cell
         case .outGoingImage:
             let cell = tableView.dequeueReusableCell(withIdentifier: "outgoingImageCell", for: indexPath) as! outgoingImageCell
@@ -352,6 +362,15 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
 
 extension ChatScreenViewController: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
+        
+        guard textView.text.count <= 400 else {
+            self.messageTextField.text = textView.text.prefix(400).description
+            sendMessageButton.isEnabled = false
+            ProgressHud.showError(message: "Text should be 400 character", viewController: self)
+            return
+        }
+        
+        
         let height = textView.contentSize.height
         DispatchQueue.main.async {
             if height < 100 {
@@ -359,9 +378,11 @@ extension ChatScreenViewController: UITextViewDelegate {
             }
             textView.checkPlaceholder()
         }
-        if textView.text.isEmpty {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            
             sendMessageButton.tintColor = .appDarkGray
         } else {
+            sendMessageButton.isEnabled = true
             sendMessageButton.tintColor = .appGreenColor
         }
        
@@ -489,10 +510,7 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                             self.blurView.isHidden = true
                           })
         presentedViewController?.dismiss(animated: true, completion: nil)
-//        case image
-//        case audio
-//        case video
-//        case file
+
         var mediaType: MediaType = .file
         if fileExtension == "MP4" {
             mediaType = .video

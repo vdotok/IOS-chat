@@ -12,11 +12,14 @@ class IncomingImageCell: UITableViewCell {
     @IBOutlet weak var chatImage: UIImageView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var userName: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         containerView.layer.cornerRadius = 8
+        userName.font = UIFont(name: "Inter-Regular", size: 14)
+        userName.textColor = .appDarkGreenColor
     }
 
     

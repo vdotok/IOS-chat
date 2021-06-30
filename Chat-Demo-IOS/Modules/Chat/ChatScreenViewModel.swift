@@ -119,12 +119,11 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
     func sendMessage(text: String) {
         let now = Date()
         let timeInterval = now.millisecondsSince1970
-        
         let message = MessageModel(id: UUID().uuidString,
                                    to: group.channelName,
                                    key: group.channelKey,
                                    from: user.refID!,
-                                   content: text,
+                                   content: text.prefix(400).description,
                                    size: 0,
                                    isGroupMessage: false,
                                    status: 0,

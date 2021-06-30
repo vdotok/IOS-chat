@@ -81,11 +81,10 @@ extension AttachmentViewController: DocumentPickerProtocol {
             let fileExtn = fileName.components(separatedBy: ".")[1]
             let documentData: Data = try! Data(contentsOf: fileURL)
             print("There were \(documentData.count) bytes")
-                  let bcf = ByteCountFormatter()
-                  bcf.allowedUnits = [.useMB] // optional: restricts the units to MB only
-                  bcf.countStyle = .file
-                  let string = bcf.string(fromByteCount: Int64(documentData.count))
-                  print("formatted result: \(string)")
+            if documentData.count > 6291456 {
+                ProgressHud.showError(message: "File should be 6MBs", viewController: self)
+                return
+            }
             delegate?.didSelectDocument(data: documentData, fileExtension: fileExtn)
         }
     }

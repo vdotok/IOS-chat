@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,11 +27,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hPj-A2-0s6">
-                        <rect key="frame" x="20" y="16" width="150" height="80"/>
+                        <rect key="frame" x="20" y="32" width="150" height="80"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDt-jU-kre">
-                        <rect key="frame" x="20" y="16" width="150" height="80"/>
+                        <rect key="frame" x="20" y="32" width="150" height="80"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="EXh-2f-tZ9"/>
                         </constraints>
@@ -43,15 +45,23 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9:02" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBS-wv-lVo">
-                        <rect key="frame" x="182" y="79" width="27.5" height="17"/>
+                        <rect key="frame" x="182" y="95" width="30" height="17"/>
                         <fontDescription key="fontDescription" name="Inter-Regular" family="Inter" pointSize="14"/>
                         <color key="textColor" name="AppLightTileGreenColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tOG-nC-dLW">
+                        <rect key="frame" x="20" y="12" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="tOG-nC-dLW" firstAttribute="leading" secondItem="hPj-A2-0s6" secondAttribute="leading" id="9P1-GR-dz9"/>
                     <constraint firstItem="rDt-jU-kre" firstAttribute="bottom" secondItem="hPj-A2-0s6" secondAttribute="bottom" id="Dho-9n-Bvp"/>
-                    <constraint firstItem="hPj-A2-0s6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="LE7-Mf-PqV"/>
+                    <constraint firstItem="tOG-nC-dLW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Ei9-T7-HiK"/>
+                    <constraint firstItem="hPj-A2-0s6" firstAttribute="top" secondItem="tOG-nC-dLW" secondAttribute="bottom" constant="-1" id="JIH-pm-CFo"/>
                     <constraint firstItem="rDt-jU-kre" firstAttribute="trailing" secondItem="hPj-A2-0s6" secondAttribute="trailing" id="Omk-ch-MaA"/>
                     <constraint firstAttribute="trailing" secondItem="hPj-A2-0s6" secondAttribute="trailing" constant="150" id="S0E-C8-gFD"/>
                     <constraint firstItem="sBS-wv-lVo" firstAttribute="leading" secondItem="hPj-A2-0s6" secondAttribute="trailing" constant="12" id="U8U-7z-VKR"/>
@@ -66,6 +76,7 @@
             <connections>
                 <outlet property="containerView" destination="hPj-A2-0s6" id="5Ik-SY-klm"/>
                 <outlet property="timeLabel" destination="sBS-wv-lVo" id="NV0-tJ-OYK"/>
+                <outlet property="userName" destination="tOG-nC-dLW" id="ImN-hT-MUd"/>
             </connections>
             <point key="canvasLocation" x="11.594202898550726" y="38.504464285714285"/>
         </tableViewCell>

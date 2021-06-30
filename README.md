@@ -34,19 +34,15 @@ Download **iOSSDKConnect** file from [VdoTok SDK](https://sdk.vdotok.com/IOS-SDK
 *	Once inside the project’s root directory type `ls` (LS in small letters) and hit enter and you should see a file named **Podfile**
 *	Type command `pod install` hit enter and wait until the process is complete
 *	Copy the downloaded **iOSSDKConnect** to frameworks folder present in the root directory of the cloned project. See attached screenshots
-<img width="618" alt="Step1" src="https://user-images.githubusercontent.com/2145411/123523346-72141500-d6dc-11eb-9fc2-cda043d83ea0.png">
-<img width="618" alt="Step2" src="https://user-images.githubusercontent.com/2145411/123523881-409d4880-d6e0-11eb-8b61-25b7e5d59361.png">
+<img width="618" alt="chat2" src="https://user-images.githubusercontent.com/2145411/123804142-673cc880-d906-11eb-877b-eb5712298812.png">
 
 *	open .xcworkspace file by double clicking it
-*	In the opened xcworkspace file, drag and drop the SDK present in the framework folder of the cloned project to the Frameworks folder of the main project, make sure to uncheck copy if needed option, see the attached screen shot.
-<img width="618" alt="Step3" src="https://user-images.githubusercontent.com/2145411/123523805-a4734180-d6df-11eb-80b1-f421dc960949.png">
-<img width="618" alt="Step7" src="https://user-images.githubusercontent.com/2145411/123524830-3d0cc000-d6e6-11eb-8379-e9c18b46d294.png">
-<img width="618" alt="Step4" src="https://user-images.githubusercontent.com/2145411/123524013-0c765780-d6e1-11eb-84aa-081bb7331bf3.png">
-<img width="618" alt="Step5" src="https://user-images.githubusercontent.com/2145411/123524027-231cae80-d6e1-11eb-96fe-ab8c4c70ab7e.png">
+*	In the opened xcworkspace file, drag and drop the SDK present in the framework folder of the cloned project to the Frameworks folder of the main project, make sure to uncheck copy if needed option, see the attached screen shot
+<img width="618" alt="chat3" src="https://user-images.githubusercontent.com/2145411/123804315-8b98a500-d906-11eb-8210-2da2c9a34c38.png">
+<img width="618" alt="chat4" src="https://user-images.githubusercontent.com/2145411/123804328-8f2c2c00-d906-11eb-89c2-077388cfd025.png">
 
 * Select the main project in xcworkspace file and in the general tab scroll to Frameworks, Libraries, and Embedded Content Section, make sure Embed & Sign is selected in Embed column next to our added SDK (.framework) 
-
-<img width="618" alt="Step6" src="https://user-images.githubusercontent.com/2145411/123524059-3c255f80-d6e1-11eb-9ecc-36a7f91616e2.png">
+<img width="618" alt="chat5" src="https://user-images.githubusercontent.com/2145411/123804428-a4a15600-d906-11eb-8eb2-381dcab9a931.png">
 
 ### Updating  Project ID and Authentication Token
 Get Project ID and Authentication Token from [Admin Panel](https://vdotok.com)

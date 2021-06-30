@@ -88,6 +88,8 @@
 		5D794A08265BE19600837B91 /* CreateGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D794A07265BE19600837B91 /* CreateGroupRequest.swift */; };
 		5D794A0A265BE1F700837B91 /* CreateGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D794A09265BE1F700837B91 /* CreateGroupService.swift */; };
 		5D794A0C265BE2A700837B91 /* CreateGroupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D794A0B265BE2A700837B91 /* CreateGroupResponse.swift */; };
+		5D79DDE82689B67C0020566E /* iOSSDKConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D79DDE52689B5920020566E /* iOSSDKConnect.framework */; };
+		5D79DDE92689B67C0020566E /* iOSSDKConnect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5D79DDE52689B5920020566E /* iOSSDKConnect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D91F7282664BCC800F12715 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D91F7272664BCC800F12715 /* Notification+Extension.swift */; };
 		5D91F7412665556A00F12715 /* OutgoingAttachementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D91F73F2665556A00F12715 /* OutgoingAttachementCell.swift */; };
 		5D91F7422665556A00F12715 /* OutgoingAttachementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D91F7402665556A00F12715 /* OutgoingAttachementCell.xib */; };
@@ -133,8 +135,6 @@
 		5DDC5C7A26567A7900663338 /* CreateGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7526567A7900663338 /* CreateGroupViewModel.swift */; };
 		5DDC5C8026567D9700663338 /* CreateGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7E26567D9700663338 /* CreateGroupCell.swift */; };
 		5DDC5C8126567D9700663338 /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDC5C7F26567D9700663338 /* CreateGroupCell.xib */; };
-		5DE6780D2687C4D3008C05E4 /* iOSSDKConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */; };
-		5DE6780E2687C4D3008C05E4 /* iOSSDKConnect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DF35FD226550966000EB9ED /* OutgoingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF35FD026550966000EB9ED /* OutgoingTextCell.swift */; };
 		5DF35FD326550966000EB9ED /* OutgoingTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DF35FD126550966000EB9ED /* OutgoingTextCell.xib */; };
 		5DF35FD826550974000EB9ED /* IncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF35FD626550974000EB9ED /* IncomingTextCell.swift */; };
@@ -167,16 +167,16 @@
 			remoteGlobalIDString = 0080172025482C730094136E;
 			remoteInfo = MqttClientTests;
 		};
-		5DE678092687C4B3008C05E4 /* PBXContainerItemProxy */ = {
+		5D79DDE42689B5920020566E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+			containerPortal = 5D79DDDF2689B5920020566E /* iOSSDKConnect.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0080171725482C730094136E;
 			remoteInfo = iOSSDKConnect;
 		};
-		5DE6780B2687C4B3008C05E4 /* PBXContainerItemProxy */ = {
+		5D79DDE62689B5920020566E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+			containerPortal = 5D79DDDF2689B5920020566E /* iOSSDKConnect.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0080172025482C730094136E;
 			remoteInfo = iOSSDKConnectTests;
@@ -190,7 +190,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5DE6780E2687C4D3008C05E4 /* iOSSDKConnect.framework in Embed Frameworks */,
+				5D79DDE92689B67C0020566E /* iOSSDKConnect.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +282,7 @@
 		5D794A07265BE19600837B91 /* CreateGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupRequest.swift; sourceTree = "<group>"; };
 		5D794A09265BE1F700837B91 /* CreateGroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupService.swift; sourceTree = "<group>"; };
 		5D794A0B265BE2A700837B91 /* CreateGroupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupResponse.swift; sourceTree = "<group>"; };
+		5D79DDDF2689B5920020566E /* iOSSDKConnect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iOSSDKConnect.xcodeproj; path = "../../../ios-sdk-connect/iOSSDKConnect.xcodeproj"; sourceTree = "<group>"; };
 		5D91F7272664BCC800F12715 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
 		5D91F73F2665556A00F12715 /* OutgoingAttachementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingAttachementCell.swift; sourceTree = "<group>"; };
 		5D91F7402665556A00F12715 /* OutgoingAttachementCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingAttachementCell.xib; sourceTree = "<group>"; };
@@ -327,7 +328,6 @@
 		5DDC5C7526567A7900663338 /* CreateGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewModel.swift; sourceTree = "<group>"; };
 		5DDC5C7E26567D9700663338 /* CreateGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupCell.swift; sourceTree = "<group>"; };
 		5DDC5C7F26567D9700663338 /* CreateGroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
-		5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iOSSDKConnect.xcodeproj; path = "../../../../Backup/chatsdk-ios/iOSSDKConnect.xcodeproj"; sourceTree = "<group>"; };
 		5DF35FD026550966000EB9ED /* OutgoingTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTextCell.swift; sourceTree = "<group>"; };
 		5DF35FD126550966000EB9ED /* OutgoingTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingTextCell.xib; sourceTree = "<group>"; };
 		5DF35FD626550974000EB9ED /* IncomingTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingTextCell.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DE6780D2687C4D3008C05E4 /* iOSSDKConnect.framework in Frameworks */,
+				5D79DDE82689B67C0020566E /* iOSSDKConnect.framework in Frameworks */,
 				5D57CD5526848F8900873AC2 /* Pods_Chat_Demo_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,6 +561,14 @@
 			path = Inter;
 			sourceTree = "<group>";
 		};
+		5D48BF4F2688DF7B00278EAB /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				5D79DDDF2689B5920020566E /* iOSSDKConnect.xcodeproj */,
+			);
+			path = Connect;
+			sourceTree = "<group>";
+		};
 		5D57CD8726860DEF00873AC2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -590,7 +598,7 @@
 		5D57DAC72642964700515FEA /* Chat-Demo-IOS */ = {
 			isa = PBXGroup;
 			children = (
-				5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */,
+				5D48BF4F2688DF7B00278EAB /* Connect */,
 				5D57CD97268650BF00873AC2 /* vdotokCert.p12 */,
 				5D44E48C264481E8009F8123 /* Common */,
 				5D41C9172643454700D33DAA /* Model */,
@@ -617,6 +625,15 @@
 				5D5C26D2265D814500940856 /* AttachmentViewController.xib */,
 			);
 			path = Popup;
+			sourceTree = "<group>";
+		};
+		5D79DDE02689B5920020566E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D79DDE52689B5920020566E /* iOSSDKConnect.framework */,
+				5D79DDE72689B5920020566E /* iOSSDKConnectTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		5D7B72E3265684AF00B0779A /* Popup */ = {
@@ -713,15 +730,6 @@
 				5DDC5C7F26567D9700663338 /* CreateGroupCell.xib */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		5DE678052687C4B3008C05E4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */,
-				5DE6780C2687C4B3008C05E4 /* iOSSDKConnectTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5DF35FCF26550943000EB9ED /* ChatCells */ = {
@@ -845,8 +853,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5DE678052687C4B3008C05E4 /* Products */;
-					ProjectRef = 5DE678042687C4B3008C05E4 /* iOSSDKConnect.xcodeproj */;
+					ProductGroup = 5D79DDE02689B5920020566E /* Products */;
+					ProjectRef = 5D79DDDF2689B5920020566E /* iOSSDKConnect.xcodeproj */;
 				},
 				{
 					ProductGroup = 18D01BF62686145B00DE549A /* Products */;
@@ -875,18 +883,18 @@
 			remoteRef = 18D01BFC2686145B00DE549A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5DE6780A2687C4B3008C05E4 /* iOSSDKConnect.framework */ = {
+		5D79DDE52689B5920020566E /* iOSSDKConnect.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = iOSSDKConnect.framework;
-			remoteRef = 5DE678092687C4B3008C05E4 /* PBXContainerItemProxy */;
+			remoteRef = 5D79DDE42689B5920020566E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5DE6780C2687C4B3008C05E4 /* iOSSDKConnectTests.xctest */ = {
+		5D79DDE72689B5920020566E /* iOSSDKConnectTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = iOSSDKConnectTests.xctest;
-			remoteRef = 5DE6780B2687C4B3008C05E4 /* PBXContainerItemProxy */;
+			remoteRef = 5D79DDE62689B5920020566E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
