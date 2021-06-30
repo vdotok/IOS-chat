@@ -81,7 +81,7 @@ extension AttachmentViewController: DocumentPickerProtocol {
             let fileExtn = fileName.components(separatedBy: ".")[1]
             let documentData: Data = try! Data(contentsOf: fileURL)
             print("There were \(documentData.count) bytes")
-            if documentData.count >= 6291456 {
+            if documentData.count > 6291456 {
                 ProgressHud.showError(message: "File should be 6MBs", viewController: self)
                 return
             }
