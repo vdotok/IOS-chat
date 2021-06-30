@@ -363,8 +363,10 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
 extension ChatScreenViewController: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         
-        guard textView.text.count < 400 else {
+        guard textView.text.count <= 400 else {
+            self.messageTextField.text = textView.text.prefix(10).description
             sendMessageButton.isEnabled = false
+            ProgressHud.showError(message: "Text should be 400 character", viewController: self)
             return
         }
         

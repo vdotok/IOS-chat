@@ -124,7 +124,11 @@ extension CreateGroupViewModelImpl {
            deleteUser(id: userId)
             output?(.updateRow(index: row))
         } else {
-            if selectedItems.count == 4 {return}
+            if selectedItems.count == 4 {
+                output?(.failure(message: "You can only select 4 participants"))
+                return
+                
+            }
             selectedItems.append(userId)
             output?(.updateRow(index: row))
         }

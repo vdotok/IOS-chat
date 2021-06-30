@@ -207,21 +207,15 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        // edit action
-        let archive = UIContextualAction(style: .normal,
+
+        let edit = UIContextualAction(style: .normal,
                                          title: "Edit") { [weak self] (action, view, completionHandler) in
-                                         //   self?.handleMoveToArchive()
             self?.selectedGroupId = indexPath.row
             self?.loadGroupView()
                                             completionHandler(true)
         }
-       
-
-        // delete action
-        
         let trash = UIContextualAction(style: .destructive,
                                        title: "Delete") { [weak self] (action, view, completionHandler) in
-                                      //  self?.handleMoveToTrash()
             self?.viewModel.deleteGroup(with: indexPath.row)
                                         completionHandler(true)
         }
@@ -229,10 +223,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
             let configuration = UISwipeActionsConfiguration(actions: [trash])
             return configuration
         }
-        let configuration = UISwipeActionsConfiguration(actions: [archive, trash])
-        
-//        configuration.performsFirstActionWithFullSwipe = false
-
+        let configuration = UISwipeActionsConfiguration(actions: [edit, trash])
         return configuration
     }
 
