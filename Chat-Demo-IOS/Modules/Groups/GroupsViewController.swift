@@ -14,16 +14,10 @@ public class GroupsViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitle: UILabel!
-    @IBOutlet weak var emptyView: UIView!
-    @IBOutlet weak var logoutButton: UIButton!
-    @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var emptyViewUserName: UILabel!
     @IBOutlet weak var blurView: UIView!
-    @IBOutlet weak var emptyViewStatus: UIView! {
-        didSet {
-            emptyViewStatus.layer.cornerRadius = emptyViewStatus.frame.height/2
-        }
-    }
+    @IBOutlet weak var emptyView: UIView!
+//    @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var viewStatus: UIView! {
         didSet {
             viewStatus.layer.cornerRadius = viewStatus.frame.height/2
@@ -84,10 +78,8 @@ public class GroupsViewController: UIViewController {
                 tableView(isHidden: viewModel.groups.count > 0 ? false : true)
                 tableView.reloadData()
             case .connected:
-                emptyViewStatus.backgroundColor = .green
                 viewStatus.backgroundColor = .green
             case .disconnected:
-            emptyViewStatus.backgroundColor = .red
             viewStatus.backgroundColor = .red
             default:
                 break
@@ -117,7 +109,6 @@ extension GroupsViewController {
     func configureAppearance() {
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
         userName.text = user.fullName
-        emptyViewUserName.text = user.fullName
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: "GroupCell", bundle: nil), forCellReuseIdentifier: "GroupCell")
@@ -158,8 +149,6 @@ extension GroupsViewController {
         titleLabel.font = UIFont(name: "Inter-Regular", size: 21)
         subTitle.textColor = .appLightIndigoColor
         subTitle.font = UIFont(name: "Poppins-Regular", size: 14)
-        logoutButton.tintColor = .appIndigoColor
-        logoutButton.titleLabel?.font = UIFont.init(name: "Manrope-Bold", size: 14)
     }
     private func tableView(isHidden: Bool) {
         if isHidden {
