@@ -9,7 +9,6 @@ import UIKit
 
 protocol AttachmentPickerDelegate: AnyObject {
     func didSelectImage(data: Data)
-    func didSelectAudio(data: Data?, url: URL?)
     func didSelectDocument(data: Data, fileExtension: String)
     func didCancel()
 }

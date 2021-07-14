@@ -496,7 +496,6 @@ extension ChatScreenViewController: ImagePickerDelegate {
     public func didSelect(image: UIImage?) {
         if let image = image {
             let jpegData = image.jpegData(compressionQuality: 0.2)
-//            let pngData = image.pngData()
             viewModel.publish(file: jpegData!, with: "PNG", type: MediaType.image.rawValue)
             ProgressHud.show(viewController: self)
         }

@@ -48,7 +48,7 @@ class DocumentPicker: NSObject {
     
     private var pickedDocument: Document?
     
-    init(viewController: UIViewController, delegate:DocumentPickerProtocol, audioPicker: Bool = false ) {
+    init(viewController: UIViewController, delegate:DocumentPickerProtocol) {
         super.init()
         self.presenetedViewController = viewController
         self.delegate = delegate
