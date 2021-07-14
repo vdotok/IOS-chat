@@ -7,6 +7,7 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import KRProgressHUD
 
 public class ChatScreenViewController: UIViewController {
 
@@ -109,6 +110,7 @@ public class ChatScreenViewController: UIViewController {
     @objc func receivedMessage(notification: NSNotification) {
         let userInfo = notification.userInfo as! [String: AnyObject]
         viewModel.receivedMessage(userInfo: userInfo)
+        ProgressHud.hide()
     }
     
     @IBAction func didTapSend(_ sender: UIButton) {
@@ -140,6 +142,7 @@ public class ChatScreenViewController: UIViewController {
     }
     
     @IBAction func didTapImage(_ sender: UIButton) {
+        imagePicker.setDelegate(delegate: self)
         imagePicker.action(for: .savedPhotosAlbum)
         
     }
@@ -493,8 +496,9 @@ extension ChatScreenViewController: ImagePickerDelegate {
     public func didSelect(image: UIImage?) {
         if let image = image {
             let jpegData = image.jpegData(compressionQuality: 0.2)
-            let pngData = image.pngData()
+//            let pngData = image.pngData()
             viewModel.publish(file: jpegData!, with: "PNG", type: MediaType.image.rawValue)
+            ProgressHud.show(viewController: self)
         }
     }
     
@@ -510,6 +514,8 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                             self.blurView.isHidden = true
                           })
         viewModel.publish(file: data, with: "PNG", type: MediaType.image.rawValue)
+        ProgressHud.show(viewController: self)
+        
     }
     
     func didSelectDocument(data: Data, fileExtension: String) {
@@ -533,6 +539,7 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
         
         
         viewModel.publish(file: data, with: fileExtension, type: mediaType.rawValue)
+        ProgressHud.show(viewController: self)
     }
     
     func didCancel() {

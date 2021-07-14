@@ -25,7 +25,7 @@ public class GroupsViewController: UIViewController {
     }
     lazy var refreshControl = UIRefreshControl()
     
-    private var selectedGroupId: Int? = nil
+    private var groupIndex: Int? = nil
     var viewModel: GroupsViewModel!
     let navigationTitle = UILabel()
     
@@ -199,7 +199,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
         let edit = UIContextualAction(style: .normal,
                                          title: "Edit") { [weak self] (action, view, completionHandler) in
-            self?.selectedGroupId = indexPath.row
+            self?.groupIndex = indexPath.row
             self?.loadGroupView()
                                             completionHandler(true)
         }
@@ -240,12 +240,15 @@ extension GroupsViewController {
         present(vc, animated: true, completion: nil)
         vc.delegate = self
         blurView.isHidden = false
+        guard let groupIndex = self.groupIndex else {return}
+        let group = viewModel.itemAt(row: groupIndex)
+        vc.setGroupTitle(group.group.groupTitle)
     }
 }
 extension GroupsViewController: PopupDelegate {
     func didTapDismiss(groupName: String?) {
-        guard let id = selectedGroupId, let name = groupName else {return}
         blurView.isHidden = true
+        guard let id = groupIndex, let name = groupName else {return}
         viewModel.editGroup(with: name, id: id)
     }
     

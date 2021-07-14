@@ -184,22 +184,17 @@ extension GroupsViewModelImpl {
                     self.output?(.failure(message: response.message))
                 case 200:
                     if self.mqttClient?.isConnected() ?? false {
-                        if response.groups?.count == self.groups.count {
-                            
-                        }
-                        else {
                             guard let fetchedGroups = response.groups  else { return }
                             let channelKeys = self.groups.map({$0.channelKey})
                             let newGroups = fetchedGroups.filter({!channelKeys.contains($0.channelKey)})
                             self.subscribe(groups: newGroups)
                             self.groups = response.groups ?? []
-                        }
                         DispatchQueue.main.async {
                             self.output?(.reload)
                         }
                        
                         
-                    }else {
+                    } else {
                         self.conncectMqtt()
                         self.groups = response.groups ?? []
                         DispatchQueue.main.async {
@@ -336,11 +331,11 @@ extension GroupsViewModelImpl: MessageDelegate {
             
             tempMessages = messages[topic] ?? []
             unreadMessages = self.unreadMessages[topic] ?? []
-            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
+            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date))
             unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
             messages[topic] = tempMessages
             self.unreadMessages[topic] = unreadMessages
-          
+            sortGroupsByMessageTime()
             output?(.reload)
 //            actionHandler?(.reload)
             
@@ -428,6 +423,34 @@ extension GroupsViewModelImpl {
         print("send receipt \(status) \(receipt.from)")
     }
     
+    private func sortGroupsByMessageTime() {
+        let readMessageIDs = getGroupIDs(from: self.messages)
+        let set = readMessageIDs
+        var sortedGroups = [Group]()
+        for id in set {
+            guard let group = self.groups.first(where: {$0.channelName == id}) else {continue}
+            sortedGroups.append(group)
+            self.groups.removeAll(where: {$0.id == group.id})
+        }
+        self.groups.insert(contentsOf: sortedGroups, at: 0)
+    }
+    
+    
+    private func getGroupIDs(from messages: [String: [ChatMessage]]) -> [String] {
+        var lastMessages = [String: ChatMessage]()
+        for msg in messages {
+            let id = msg.key
+            let lastMessage = msg.value.sorted(by:{$0.date > $1.date}).first
+            lastMessages[id] = lastMessage
+        }
+        
+        let sortedMessages = lastMessages.sorted(by: {$0.value.date > $1.value.date})
+        
+        let groupIds = sortedMessages.map({$0.key})
+        
+        return groupIds
+    }
+    
     
     func itemAt(row: Int) -> TempGroup {
         let channel = groups[row].channelName
@@ -498,6 +521,7 @@ extension GroupsViewModelImpl: FileDelegate {
                                                    Constants.date: date
                                                    
                                         ])
+        sortGroupsByMessageTime()
         output?(.reload)
     }
     

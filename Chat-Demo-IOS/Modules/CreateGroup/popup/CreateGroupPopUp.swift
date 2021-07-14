@@ -50,13 +50,17 @@ class CreateGroupPopUp: UIViewController {
         delegate?.didTapDismiss(groupName: groupName)
     }
     
+    func setGroupTitle(_ text: String) {
+        self.titleTextField.text = text
+        self.titleTextField.becomeFirstResponder()
+    }
+    
     private func configureAppearance() {
         containerView.layer.cornerRadius = 8
         mainTitle.font = UIFont(name: "Poppins-SemiBold", size: 14)
         mainTitle.textColor = .appGreyColor
         textFieldTitle.font = UIFont(name: "Inter-Regular", size: 14)
         textFieldTitle.textColor = .appDarkColor
-        
     }
 
 }

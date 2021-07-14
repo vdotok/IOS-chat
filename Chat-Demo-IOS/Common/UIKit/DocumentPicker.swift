@@ -13,6 +13,20 @@ protocol DocumentPickerProtocol {
     func didTapdismiss()
 }
 
+enum DocumentType {
+    case audio
+    case general
+    
+    var type: String {
+        switch self {
+        case .audio:
+            return "public.audio"
+        case .general:
+            return "public.data"
+        }
+    }
+}
+
 class Document: UIDocument {
     var data: Data?
     
@@ -34,17 +48,19 @@ class DocumentPicker: NSObject {
     
     private var pickedDocument: Document?
     
-    init(viewController: UIViewController, delegate:DocumentPickerProtocol ) {
+    init(viewController: UIViewController, delegate:DocumentPickerProtocol, audioPicker: Bool = false ) {
         super.init()
         self.presenetedViewController = viewController
         self.delegate = delegate
     }
     
     
-    func displayPicker() {
-        self.picker =  UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+    func displayPicker(documentTypes: [DocumentType] = [.general]) {
+        let documentTypes = documentTypes.map({$0.type})
+        self.picker =  UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         guard let documentPicker = picker else {return }
         picker?.delegate = self
+        
         presenetedViewController?.present(documentPicker, animated: true, completion:  nil)
         
     }

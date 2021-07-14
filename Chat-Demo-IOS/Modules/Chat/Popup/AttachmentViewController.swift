@@ -7,8 +7,9 @@
 
 import UIKit
 
-protocol AttachmentPickerDelegate: class {
+protocol AttachmentPickerDelegate: AnyObject {
     func didSelectImage(data: Data)
+    func didSelectAudio(data: Data?, url: URL?)
     func didSelectDocument(data: Data, fileExtension: String)
     func didCancel()
 }
@@ -19,7 +20,7 @@ class AttachmentViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var mainTitle: UILabel!
     weak var delegate: AttachmentPickerDelegate?
-   lazy var imagePicker: ImagePicker = ImagePicker(presentationController: self, delegate: self)
+    lazy var imagePicker: ImagePicker = ImagePicker(presentationController: self, delegate: self)
     lazy var documentPicker = DocumentPicker(viewController: self, delegate: self)
     
     @IBAction func didTapCross(_ sender: UIButton) {
@@ -45,6 +46,7 @@ class AttachmentViewController: UIViewController {
     
     
     @IBAction func didTapAlbum(_ sender: UIButton) {
+        imagePicker.setDelegate(delegate: self)
         imagePicker.action(for: .photoLibrary)
     }
     
@@ -54,6 +56,10 @@ class AttachmentViewController: UIViewController {
     
     @IBAction func didTapFile(_ sender: UIButton) {
         documentPicker.displayPicker()
+    }
+    
+    @IBAction func didTapAudio(_ sender: UIButton) {
+        documentPicker.displayPicker(documentTypes: [.audio])
     }
  }
 
@@ -78,7 +84,7 @@ extension AttachmentViewController: DocumentPickerProtocol {
         if let pickedDoc = document {
             let fileURL = pickedDoc.fileURL
             let fileName = (fileURL.absoluteString as NSString).lastPathComponent
-            let fileExtn = fileName.components(separatedBy: ".")[1]
+            let fileExtn = fileName.components(separatedBy: ".").last ?? ""
             let documentData: Data = try! Data(contentsOf: fileURL)
             print("There were \(documentData.count) bytes")
             if documentData.count > 6291456 {

@@ -30,6 +30,10 @@ open class ImagePicker: NSObject {
 //        self.pickerController.allowsEditing = true
         self.pickerController.mediaTypes = ["public.image"]
     }
+    
+    func setDelegate(delegate: ImagePickerDelegate) {
+        self.delegate = delegate
+    }
 
      func action(for type: UIImagePickerController.SourceType) {
         guard UIImagePickerController.isSourceTypeAvailable(type) else {
@@ -44,6 +48,7 @@ open class ImagePicker: NSObject {
         controller.dismiss(animated: true, completion: nil)
 
         self.delegate?.didSelect(image: image)
+        self.delegate = nil
     }
 }
 
