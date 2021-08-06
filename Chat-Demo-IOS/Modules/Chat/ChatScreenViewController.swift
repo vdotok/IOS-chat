@@ -17,6 +17,7 @@ public class ChatScreenViewController: UIViewController {
     @IBOutlet weak var blurView: UIView!
     @IBOutlet weak var micButton: UIButton!
     @IBOutlet weak var sendMessageButton: UIButton!
+    var users: [String] = []
     
     lazy var titleLabel: UILabel = {
         
@@ -257,7 +258,13 @@ extension ChatScreenViewController {
         guard let name = userInfo["message"] as? String,let topic = userInfo["topic"] as? String, name != self.viewModel.user.refID  else { return }
         guard topic == viewModel.group.channelName else {return}
         guard let userName = viewModel.group.participants.filter({$0.refID == name}).first else {return}
-        subTitle.text = "\(userName.fullName) " + "is typing..."
+        
+        if !users.contains(userName.fullName) {
+            users.append(userName.fullName)
+        }
+        let names = users.map({$0}).joined(separator: ",")
+        subTitle.text = "\(names)" + " \(users.count == 1 ? "is" : "are") typing..."
+        
         
     }
     
@@ -266,11 +273,13 @@ extension ChatScreenViewController {
         guard let name = userInfo["message"] as? String, let topic = userInfo["topic"] as? String, name != self.viewModel.user.fullName else { return }
         guard topic == viewModel.group.channelName else {return}
         guard let userName = viewModel.group.participants.filter({$0.refID == name}).first else {return}
-        if let text = subTitle.text,
-           text.contains("\(userName.fullName)") {
+        users.removeAll(where: {$0 == userName.fullName})
+        if users.count == 0 {
             subTitle.text = ""
+        } else {
+            let names = users.map({$0}).joined(separator: ",")
+            subTitle.text = "\(names)" + " \(users.count == 1 ? "is" : "are") typing..."
         }
-        print("Typing end")
     }
         
 }
