@@ -21,9 +21,6 @@ Open terminal and type command `pod --version` and hit enter. If command is not 
 ### Project Signup and Project ID
 Register at [VdoTok HomePage](https://vdotok.com) to get Authentication Token and Project ID
 
-### Download iOS SDK Connect
-Download **iOSSDKConnect** file from [VdoTok SDK](https://sdk.vdotok.com/IOS-SDKs/)
-
 ### Code Setup
 *	Click on **Code** button 
 *	From HTTPS section copy repo URL 
