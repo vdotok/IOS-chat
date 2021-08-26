@@ -130,9 +130,8 @@ class GroupsViewModelImpl: GroupsViewModel {
     private func conncectMqtt() {
          
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
-        guard let mediaServer = VDOTOKObject<AuthenticateResponse>().getData() else { return }
-        let host = mediaServer.messagingServerMap.host
-        guard let port = UInt16(mediaServer.messagingServerMap.port) else {return}
+        let host = user.messagingServerMap.host
+        guard let port = UInt16(user.messagingServerMap.port) else {return}
         let userName = user.refID
         let password = user.authorizationToken
         
