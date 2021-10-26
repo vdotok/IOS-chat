@@ -65,7 +65,7 @@ struct Constants {
 
 
 struct AuthenticationConstants {
-    static let PROJECTID = "15Q89R"
+    static let PROJECTID = "125YLEY1"
     static let AUTHTOKEN = "3d9686b635b15b5bc2d19800407609fa"
 }
 
@@ -276,8 +276,6 @@ extension GroupsViewModelImpl: Connectivity {
   
 }
 
-
-
 extension GroupsViewModelImpl: CustomPacketDelegate {
     func didRecieveJson(data: Data, topic: String) {
         
@@ -286,7 +284,6 @@ extension GroupsViewModelImpl: CustomPacketDelegate {
     func didRecieveCustom(packet: String, topic: String) {
         
     }
-    
     
 }
 
@@ -303,14 +300,10 @@ extension GroupsViewModelImpl: PresenceStates {
         
     }
     
-    
 }
-
 
 extension GroupsViewModelImpl: MessageDelegate {
     func onMessageReceive(_ message: Message) {
-//        print(message)
-        
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
         var topic = message.to
         if message.to.split(separator: "/").count > 1 {
