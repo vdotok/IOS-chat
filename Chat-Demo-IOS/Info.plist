@@ -18,16 +18,16 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>NSCameraUsageDescription</key>
-	<string>This app wants to take pictures.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app wants to use your photos.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app wants to record audio</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app wants to take pictures.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app wants to record audio</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app wants to use your photos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Manrope-Bold.ttf</string>

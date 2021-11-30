@@ -171,7 +171,10 @@ extension GroupsViewModelImpl {
         self.output?(.showProgress)
         store.fetchGroups(with: request) { [weak self] (response) in
             guard let self = self else {return}
-            self.output?(.hideProgress)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                self.output?(.hideProgress)
+            })
+            
             switch response {
             case .success(let response):
                 switch response.status {
@@ -541,6 +544,7 @@ extension GroupsViewModelImpl {
         output?(.showProgress)
         let request = EditGroupRequest(group_title: title, group_id: groups[id].id)
         editStore.editGroup(with: request) { [weak self] result in
+            
             self?.output?(.hideProgress)
             switch result {
             case .success(_):
