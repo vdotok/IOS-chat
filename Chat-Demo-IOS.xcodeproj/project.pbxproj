@@ -805,6 +805,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1220;
+				ORGANIZATIONNAME = VDOTOK;
 				TargetAttributes = {
 					5D57DAC42642964700515FEA = {
 						CreatedOnToolsVersion = 12.2;
