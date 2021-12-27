@@ -91,9 +91,6 @@ public class ChatScreenViewController: UIViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
-                
-            default:
-                break
             }
         }
     }

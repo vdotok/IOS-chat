@@ -117,7 +117,7 @@ class GroupsViewModelImpl: GroupsViewModel {
     var messages: [String: [ChatMessage]] = [:]
     var unreadMessages:[String:[ChatMessage]] = [:]
     
-    init(router: GroupsRouter, store:AllGroupStroreable = AllGroupService(service: NetworkService()) ) {
+    init(router: GroupsRouter, store: AllGroupStroreable = AllGroupService(service: NetworkService()) ) {
         self.router = router
         self.store = store
         
