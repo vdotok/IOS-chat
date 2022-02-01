@@ -66,8 +66,8 @@ struct Constants {
 
 
 struct AuthenticationConstants {
-    static let PROJECTID = "125YLEY1"
-    static let AUTHTOKEN = "3d9686b635b15b5bc2d19800407609fa"
+    static let PROJECTID = ""
+    static let AUTHTOKEN = ""
 }
 
 struct TempGroup {
