@@ -33,7 +33,7 @@ class ChatMessage {
     }
 }
 
-class AvailableModel: Available, Codable {
+class AvailableModel: Available {
     internal init(key: String, channel: String, changes: Bool, status: Bool) {
         self.key = key
         self.channel = channel
@@ -45,29 +45,6 @@ class AvailableModel: Available, Codable {
     var channel: String
     var changes: Bool
     var status: Bool
-}
-struct Constants {
-    static let host =  "vte2.vdotok.com"
-    static let toTopic = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ/NorgicStagingChannel/?me=0"
-    static let topic = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ/NorgicStagingChannel/?last=20"
-    static let channel = "NorgicStagingChannel/"
-    static let key = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ"
-    static let presence = "emitter/presence/"
-    
-    //MARK: Key Constants
-    static let usernameKey = "username"
-    static let idKey = "id"
-    static let messageKey = "message"
-    static let topicKey = "topic"
-    static let fileKey = "fileType"
-    static let mediaType = "type"
-    static let date = "date"
-}
-
-
-struct AuthenticationConstants {
-    static let PROJECTID = "176GK5IN"
-    static let AUTHTOKEN = "3d9686b635b15b5bc2d19800407609fa"
 }
 
 struct TempGroup {
@@ -130,25 +107,19 @@ class GroupsViewModelImpl: GroupsViewModel {
     
     private func conncectMqtt() {
          
-        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
+        guard let user = VDOTOKObject<UserResponse>().getData(),
+        let port = UInt16(user.messagingServerMap.port)
+        else {return}
         let host = user.messagingServerMap.host
-        guard let port = UInt16(user.messagingServerMap.port) else {return}
         let userName = user.refID
         let password = user.authorizationToken
-        
+    
         let client = Client(port: port,
                             host: host,
                             userName: userName!,
                             password: password!,
                             reConnectivity: true)
-      mqttClient = ChatClient(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self)
-        mqttClient?.connect()
-        setDelegate()
-    }
-    
-    
-    func setDelegate(){
-        mqttClient?.setFileDelegate(fileDelegate: self)
+      mqttClient = ChatClientImp(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self, fileDelegate: self, autoReconnect: true)
     }
     
     func viewModelWillAppear() {
@@ -426,6 +397,7 @@ extension GroupsViewModelImpl {
     
     
     func itemAt(row: Int) -> TempGroup {
+        
         let channel = groups[row].channelName
         let present = presentCandidates[channel]
         let topic =  messages[channel]

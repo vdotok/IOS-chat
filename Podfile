@@ -8,8 +8,8 @@ target 'Chat-Demo-IOS' do
   # Pods for Chat-Demo-IOS
     pod 'KRProgressHUD'
     pod 'IQKeyboardManagerSwift'
-    pod 'VdoTokConnect' , :git => 'https://github.com/vdotok/VdoTokConnect.git'
-    pod 'CocoaMQTT'
+  #  pod 'VdoTokConnect' , :git => 'https://github.com/vdotok/VdoTokConnect.git'
+   pod 'CocoaMQTT', '2.0.3-beta2'
     pod 'SocketRocket'
 
 end

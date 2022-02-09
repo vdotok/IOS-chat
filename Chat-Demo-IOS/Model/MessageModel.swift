@@ -9,6 +9,10 @@
 import Foundation
 import iOSSDKConnect
 
+
+
+
+
 class MessageModel: Message {
     var id: String
     var to: String
