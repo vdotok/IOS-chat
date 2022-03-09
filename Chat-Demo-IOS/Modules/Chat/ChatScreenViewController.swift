@@ -8,6 +8,7 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import iOSSDKConnect
 
 public class ChatScreenViewController: UIViewController {
 
@@ -299,47 +300,47 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingTextCell", for: indexPath) as! OutgoingTextCell
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
-            guard let userName = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
+            guard let userName = viewModel.group.participants.filter({$0.refID == item.0.from}).first else { return UITableViewCell() }
             cell.backgroundColor = .appLightGrey
             cell.userName.text = userName.fullName
             cell.messageLabel.text = item.0.content
-            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
+            cell.timeLabel.text = UInt64(item.0.date).toDateTime.toTimeString
             return cell
         case .incomingAttachment:
             let cell = tableView.dequeueReusableCell(withIdentifier: "IncomingAttachmentCell", for: indexPath) as! IncomingAttachmentCell
-            cell.url = item.0.fileType!
+         //   cell.url = item.0.fileType!
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             cell.delegate = self
-            guard let user = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
+            guard let user = viewModel.group.participants.filter({$0.refID == item.0.from}).first else { return UITableViewCell() }
             cell.userName.text = user.fullName
-            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
+            cell.timeLabel.text = UInt64(item.0.date).toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
         
             return cell
         case .outgoingAttachment:
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingAttachementCell", for: indexPath) as! OutgoingAttachementCell
-            cell.url = item.0.fileType!
+       //     cell.url = item.0.fileType!
             cell.delegate = self
-            cell.configure(seen: item.0.status.toImage() ?? "")
-            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
+//            cell.configure(seen: item.0.status.toImage() ?? "")
+//            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
             return cell
             
         case .incomingImage:
             let cell = tableView.dequeueReusableCell(withIdentifier: "IncomingImageCell", for: indexPath) as! IncomingImageCell
             cell.backgroundColor = .appLightGrey
-            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
+           // cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
-            cell.configure(with: item.0.fileType)
-            guard let user = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
-            cell.userName.text = user.fullName
+          //  cell.configure(with: item.0.fileType)
+         //   guard let user = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
+           // cell.userName.text = user.fullName
             return cell
         case .outGoingImage:
             let cell = tableView.dequeueReusableCell(withIdentifier: "outgoingImageCell", for: indexPath) as! outgoingImageCell
             cell.backgroundColor = .appLightGrey
-            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
-            cell.configure(with: item.0.fileType)
-            cell.configure(seen: item.0.status.toImage() ?? "")
+//            cell.timeLabel.text = item.0.date.toDateTime.toTimeString
+//            cell.configure(with: item.0.fileType)
+//            cell.configure(seen: item.0.status.toImage() ?? "")
             return cell
         default:
             break
@@ -347,17 +348,17 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
       return UITableViewCell()
     }
     
-    private func inComingCell( indexPath: IndexPath, item: ChatMessage) -> IncomingTextCell {
+    private func inComingCell( indexPath: IndexPath, item: BaseMessage) -> IncomingTextCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IncomingTextCell", for: indexPath) as! IncomingTextCell
         cell.messageLabel.text = item.content
-        cell.timeLabel.text = item.date.toDateTime.toTimeString
+        cell.timeLabel.text = UInt64(item.date).toDateTime.toTimeString
         cell.bubbleView.backgroundColor = .white
         cell.backgroundColor = .appLightGrey
         cell.messageLabel.textColor = .appDarkerGray
         cell.timeLabel.font = UIFont(name: "Inter-Regular", size: 14)
         cell.messageStatus.font = UIFont(name: "Inter-Regular", size: 14)
         cell.bubbleView.layer.cornerRadius = 8
-        cell.configure(seen: item.status.toImage() ?? "chupaaang")
+        cell.configure(seen: ReceiptType(rawValue: item.status)?.toImage() ?? "chupaaang")
         return cell
     }
     

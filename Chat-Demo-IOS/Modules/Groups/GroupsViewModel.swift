@@ -10,8 +10,8 @@ import Foundation
 import iOSSDKConnect
 import UIKit
 
-
 class ChatMessage {
+
     let id: String
     let sender: String
     let content: String
@@ -67,9 +67,9 @@ protocol GroupsViewModel: GroupsViewModelInput {
     var searchGroup: [Group] {get set}
     var isSearching: Bool {get set}
     var mqttClient: ChatClient? {get set}
-    var messages: [String: [ChatMessage]] {get set}
+    var messages: [String: [BaseMessage]] {get set}
     var presentCandidates: [String: [String]] {get set}
-    var unreadMessages:[String:[ChatMessage]] {get set}
+    var unreadMessages:[String:[BaseMessage]] {get set}
     func viewModelDidLoad()
     func viewModelWillAppear()
     func fetchGroups()
@@ -91,8 +91,8 @@ class GroupsViewModelImpl: GroupsViewModel {
     var searchGroup: [Group] = []
     var isSearching: Bool = false
     var presentCandidates: [String: [String]] = [:]
-    var messages: [String: [ChatMessage]] = [:]
-    var unreadMessages:[String:[ChatMessage]] = [:]
+    var messages: [String: [BaseMessage]] = [:]
+    var unreadMessages:[String:[BaseMessage]] = [:]
     
     init(router: GroupsRouter, store: AllGroupStroreable = AllGroupService(service: NetworkService()) ) {
         self.router = router
@@ -113,7 +113,7 @@ class GroupsViewModelImpl: GroupsViewModel {
         let host = user.messagingServerMap.host
         let userName = user.refID
         let password = user.authorizationToken
-    
+        
         let client = Client(port: port,
                             host: host,
                             userName: userName!,
@@ -157,29 +157,8 @@ extension GroupsViewModelImpl {
                 case 401:
                     self.output?(.failure(message: response.message))
                 case 200:
-                    if self.mqttClient?.isConnected() ?? false {
-                        if response.groups?.count == self.groups.count {
-                            
-                        }
-                        else {
-                            guard let fetchedGroups = response.groups  else { return }
-                            let channelKeys = self.groups.map({$0.channelKey})
-                            let newGroups = fetchedGroups.filter({!channelKeys.contains($0.channelKey)})
-                            self.subscribe(groups: newGroups)
-                            self.groups = response.groups ?? []
-                        }
-                        DispatchQueue.main.async {
-                            self.output?(.reload)
-                        }
-                       
-                        
-                    }else {
-                        self.conncectMqtt()
-                        self.groups = response.groups ?? []
-                        DispatchQueue.main.async {
-                            self.output?(.reload)
-                        }
-                    }
+                    guard let groups = response.groups else {return}
+                    self.update(groups)
                     
                 default:
                     break
@@ -187,6 +166,30 @@ extension GroupsViewModelImpl {
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+    
+    private func update(_ groups: [Group]) {
+        guard let _ = mqttClient else {
+            conncectMqtt()
+            self.groups = groups
+            reloadData()
+            return
+            
+        }
+        if groups.count != self.groups.count {
+            let channelKeys = self.groups.map({$0.channelKey})
+            let newGroups = groups.filter({!channelKeys.contains($0.channelKey)})
+            self.subscribe(groups: newGroups)
+            self.groups = groups
+            reloadData()
+        }
+       
+    }
+    
+    private func reloadData() {
+        DispatchQueue.main.async {
+            self.output?(.reload)
         }
     }
 }
@@ -278,39 +281,37 @@ extension GroupsViewModelImpl: PresenceStates {
 }
 
 extension GroupsViewModelImpl: MessageDelegate {
-    func onMessageReceive(_ message: Message) {
+    
+    func onMessageReceive(_ message: BaseMessage) {
+        
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
         var topic = message.to
         if message.to.split(separator: "/").count > 1 {
             topic = message.to.split(separator: "/")[1] + "/"
         }
-        
-        var tempMessages: [ChatMessage] = []
-        var unreadMessages: [ChatMessage] = []
+        var tempMessages: [BaseMessage] = []
+        var unreadMessages: [BaseMessage] = []
         
         if message.type == "text" {
-            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.fullName!, topic: message.to)
+//            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.fullName!, topic: message.to)
             
-            self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
+           // self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
             let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
-            NotificationCenter.default.post(name: name, object: self,
-                                            userInfo: [Constants.messageKey: message.content,
-                                                       Constants.topicKey: topic,
-                                                       Constants.usernameKey: message.from,
-                                                       Constants.idKey: message.id,
-                                                       Constants.date: message.date
-                                            ])
-            
+//            NotificationCenter.default.post(name: name, object: self,
+//                                            userInfo: [Constants.messageKey: message.content,
+//                                                       Constants.topicKey: topic,
+//                                                       Constants.usernameKey: message.from,
+//                                                       Constants.idKey: message.id,
+//                                                       Constants.date: message.date
+//                                            ])
+//
             tempMessages = messages[topic] ?? []
             unreadMessages = self.unreadMessages[topic] ?? []
-            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
-            unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
+            tempMessages.append(message)
+            unreadMessages.append(message)
             messages[topic] = tempMessages
             self.unreadMessages[topic] = unreadMessages
-          
-            output?(.reload)
-//            actionHandler?(.reload)
-            
+            reloadData()
         }
     }
     
@@ -408,12 +409,12 @@ extension GroupsViewModelImpl {
         }
         
         else {
-            if let message = topic?.last?.content {
-                lastMessage = message
-            }
-            if let _ = topic?.last?.fileType {
-                lastMessage = "Attachment"
-            }
+//            if let message = topic?.last?.content {
+//                lastMessage = message
+//            }
+//            if topic?.last?.type == "file" {
+//                lastMessage = "Attachment"
+//            }
                
         }
         
@@ -444,28 +445,28 @@ extension GroupsViewModelImpl: FileDelegate {
         var tempMessages: [ChatMessage] = []
         var unreadMessages: [ChatMessage] = []
         
-        unreadMessages = self.unreadMessages[file.topic ?? ""] ?? []
-        tempMessages = messages[file.topic ?? ""] ?? []
-        tempMessages.append(message)
-        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date ))
-        messages[file.topic ?? ""] = tempMessages
-        self.unreadMessages[file.topic ?? ""] = unreadMessages
-        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.fullName!, topic: file.topic ?? "")
-        
-        self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == file.from)
-           
-            
-        let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
-        NotificationCenter.default.post(name: name, object: self,
-                                        userInfo: [Constants.messageKey: "",
-                                                   Constants.topicKey: file.topic,
-                                                   Constants.usernameKey: file.from,
-                                                   Constants.idKey: message.id,
-                                                   Constants.fileKey: message.fileType,
-                                                   Constants.mediaType: file.type,
-                                                   Constants.date: date
-                                                   
-                                        ])
+//        unreadMessages = self.unreadMessages[file.topic ?? ""] ?? []
+//        tempMessages = messages[file.topic ?? ""] ?? []
+//        tempMessages.append(message)
+//        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date ))
+//        messages[file.topic ?? ""] = tempMessages
+//        self.unreadMessages[file.topic ?? ""] = unreadMessages
+//        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.fullName!, topic: file.topic ?? "")
+//        
+//        self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == file.from)
+//           
+//            
+//        let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
+//        NotificationCenter.default.post(name: name, object: self,
+//                                        userInfo: [Constants.messageKey: "",
+//                                                   Constants.topicKey: file.topic,
+//                                                   Constants.usernameKey: file.from,
+//                                                   Constants.idKey: message.id,
+//                                                   Constants.fileKey: message.fileType,
+//                                                   Constants.mediaType: file.type,
+//                                                   Constants.date: date
+//                                                   
+//                                        ])
         output?(.reload)
     }
     

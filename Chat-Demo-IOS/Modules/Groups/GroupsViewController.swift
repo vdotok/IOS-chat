@@ -108,8 +108,8 @@ public class GroupsViewController: UIViewController {
     @objc private func removeCount(notification: NSNotification) {
         let userInfo = notification.userInfo as! [String: AnyObject]
         guard let channelName = userInfo["channelName"] as? String else { return }
-        guard let chats = userInfo["chatMessages"] as? [ChatMessage] else {return}
-        viewModel.messages[channelName] = chats
+        guard let chats = userInfo["chatMessages"] as? [Message] else {return}
+     //   viewModel.messages[channelName] = chats
         viewModel.unreadMessages[channelName]?.removeAll()
     }
 }

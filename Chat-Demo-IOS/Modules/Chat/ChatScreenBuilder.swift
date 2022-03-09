@@ -12,7 +12,7 @@ import iOSSDKConnect
 
 class ChatScreenBuilder {
 
-    func build(with navigationController: UINavigationController?, client: ChatClient, group: Group, user: UserResponse, messages: [ChatMessage]) -> UIViewController {
+    func build(with navigationController: UINavigationController?, client: ChatClient, group: Group, user: UserResponse, messages: [BaseMessage]) -> UIViewController {
         
         let storyboard = UIStoryboard(name: "ChatScreen", bundle: Bundle(for: ChatScreenBuilder.self))
         let viewController = storyboard.instantiateViewController(withIdentifier: "ChatScreenViewController") as! ChatScreenViewController
