@@ -28,11 +28,11 @@ Register at [VdoTok HomePage](https://vdotok.com) to get **Authentication Token*
 
 ### Code Setup
 *	Click on **Code** button 
-*	From HTTPS section copy **repo URL**
+*	From HTTPS section, copy **repo URL**
 *	Open **Terminal**
 *	Go to Desktop **Directory** by typing `cd Desktop` and hit **Enter**
 *	And then type `git clone paste_copied_ url` and hit **Enter**
-*	After cloning is complete, go to **Demo project’s root directory** by typing `cd path_to_ 		cloned_project` and hit **Enter**
+*	After cloning is complete, go to **Demo project’s root directory** by typing `cd path_to_cloned_project` and hit **Enter**
 *	Once inside the project’s root directory type `ls` (LS in small letters) and hit **Enter**. You 	should be able to see a file named **Podfile**
 *	Type command `pod install` > hit **Enter** and wait until the process is complete
 
