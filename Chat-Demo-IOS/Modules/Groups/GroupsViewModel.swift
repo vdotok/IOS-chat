@@ -46,30 +46,7 @@ class AvailableModel: Available, Codable {
     var changes: Bool
     var status: Bool
 }
-struct Constants {
-    static let host =  "vte2.vdotok.com"
-    static let toTopic = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ/NorgicStagingChannel/?me=0"
-    static let topic = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ/NorgicStagingChannel/?last=20"
-    static let channel = "NorgicStagingChannel/"
-    static let key = "AACO5B_L67HeJxw7InqZzyiGyb92KyJQ"
-    static let presence = "emitter/presence/"
-    
-    //MARK: Key Constants
-    static let usernameKey = "username"
-    static let idKey = "id"
-    static let messageKey = "message"
-    static let topicKey = "topic"
-    static let fileKey = "fileType"
-    static let mediaType = "type"
-    static let date = "date"
-}
 
-
-struct AuthenticationConstants {
-    static let PROJECTID = ""
-    static let AUTHTOKEN = ""
-    static let HOST = ""
-}
 
 struct TempGroup {
     let group: Group
@@ -131,9 +108,11 @@ class GroupsViewModelImpl: GroupsViewModel {
     
     private func conncectMqtt() {
          
-        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
-        let host = user.messagingServerMap.host
-        guard let port = UInt16(user.messagingServerMap.port) else {return}
+        guard let user = VDOTOKObject<UserResponse>().getData(),
+              let host = user.messagingServerMap?.host,
+              let serverPort = user.messagingServerMap?.port,
+              let port = UInt16(serverPort)
+        else {return}
         let userName = user.refID
         let password = user.authorizationToken
         

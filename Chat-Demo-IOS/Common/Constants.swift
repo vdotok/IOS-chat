@@ -8,4 +8,21 @@
 
 import Foundation
 
+struct Constants {
+    static let presence = "emitter/presence/"
+//    
+//    //MARK: Key Constants
+    static let usernameKey = "username"
+    static let idKey = "id"
+    static let messageKey = "message"
+    static let topicKey = "topic"
+    static let fileKey = "fileType"
+    static let mediaType = "type"
+    static let date = "date"
+}
 
+
+struct AuthenticationConstants {
+    static let PROJECTID = ""
+    static let HOST = ""
+}

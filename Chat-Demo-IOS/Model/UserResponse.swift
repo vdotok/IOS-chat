@@ -14,8 +14,8 @@ struct UserResponse: Codable {
     let processTime: Int?
     let refID: String?
     let status, userID: Int?
-    let mediaServerMap: ServerMap
-    let messagingServerMap: ServerMap
+    let mediaServerMap: ServerMap?
+    let messagingServerMap: ServerMap?
     enum CodingKeys: String, CodingKey {
         case authToken = "auth_token"
         case authorizationToken = "authorization_token"
