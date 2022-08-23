@@ -24,5 +24,5 @@ struct Constants {
 
 struct AuthenticationConstants {
     static let PROJECTID = ""
-    static let HOST = ""
+    static let TENANTSERVER = ""
 }
