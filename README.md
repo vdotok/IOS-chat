@@ -46,7 +46,7 @@ Register at [VdoTok HomePage](https://vdotok.com) to get **TENANT TESTING SERVER
 *  In struct AuthenticationConstants **(iOS-chat -> common -> constants)**, replace the values for **PROJECTID** and **TENANTSERVER** with your values
 
 ### Building On Device
-*Please be noted that iOSSDKStreaming does not work for iOS Simulator*
+*Please be noted that iOSSDKConnect does not work for iOS Simulator*
 
 To run on a real device:
   * Go to your **Main Target->Signing and Capabilities**
