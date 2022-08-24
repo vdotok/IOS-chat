@@ -49,6 +49,9 @@ Register at [VdoTok HomePage](https://vdotok.com) to get **TENANT TESTING SERVER
 *Please be noted that iOSSDKConnect does not work for iOS Simulator*
 
 To run on a real device:
+
+<img width="500" alt="Screenshot 2022-08-24 at 12 39 21 PM" src="https://user-images.githubusercontent.com/111276411/186361499-0a93fc75-db9b-4eaa-bb9a-2f14556b1051.png">
+
   * Go to your **Main Target->Signing and Capabilities**
   * Select your Team and setup your bundle identifier like `com.company.appname`
   * Connect your device with MacBook pro
