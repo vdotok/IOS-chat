@@ -4,14 +4,16 @@ Vdotok-iOS-Chat
 ## Installation
 
 ### Requirements
+
+##### Development Requirements
+* Xcode 13.4.1 or latest version
+* [Click here](https://developer.apple.com/xcode/resources/) to download Xcode on your Macbook
+
 ##### System Requirements
 * MacOS as compatible with xcode version
 * 8GB of RAM memory
-   
-##### Development Requirements
-* Xcode 13.4.1 or latest version
-* [Click here](https://developer.apple.com/xcode/resources/) to download Xcode on your macbook.
-
+  
+  
 ### Installing Cocoapods
 Open **Terminal** and type command `pod --version` and hit **Enter**. 
 
@@ -19,6 +21,7 @@ If command is not found then you don’t have Cocoapods installed on your system
 #### Installing Cocoapods
 
 * Type the following command in **Terminal** `sudo gem install cocoapods` and hit **Enter**
+* If you face this issue **ERROR: Failed to build gem native extension**, then run `brew install cocoapods`
 * After installation is complete, type command `pod --version` and hit **Enter** to confirm installation is successful
 
 ### Project Signup and Project ID
@@ -54,7 +57,7 @@ To run on a real device:
 
   * Go to your **Main Target->Signing and Capabilities**
   * Select your Team and setup your bundle identifier like `com.company.appname`
-  * Connect your device with MacBook pro
+  * Connect your device with MacBook
   * Select your device from the run destination menu in toolbar
   * Click on play button on xcode toolbar
 
