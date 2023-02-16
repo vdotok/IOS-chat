@@ -8,11 +8,11 @@
 
 import Foundation
 
-typealias uploadComplition = ((Result<UploadFileResponse, Error>) -> Void)
+typealias uploadCompletion = ((Result<UploadFileResponse, Error>) -> Void)
 
 
 protocol uploadStoreable {
-    func uploadFile(with request: UploadFileRequest, complition: @escaping uploadComplition)
+    func uploadFile(with request: UploadFileRequest, complition: @escaping uploadCompletion)
 }
 
 class UploadFileService: BaseDataStore, uploadStoreable {
@@ -24,36 +24,32 @@ class UploadFileService: BaseDataStore, uploadStoreable {
         super.init(service: service)
     }
     
-    func uploadFile(with request: UploadFileRequest, complition: @escaping uploadComplition) {
+    func uploadFile(with request: UploadFileRequest, complition: @escaping uploadCompletion) {
         service.post(request: request) { (result) in
             switch result {
             case .success(let data):
-                self.translate(data: data, complition: complition)
+                self.translate(data: data, completion: completion)
             case .failure(let error):
-                complition(.failure(error))
+                completion(.failure(error))
                 
             }
         }
     }
     
-    private func translate(data: Data, complition: uploadComplition) {
+    private func translate(data: Data, completion: uploadCompletion) {
         do {
             let response: UploadFileResponse = try translator.decodeObject(data: data)
             switch response.status {
             case 200:
-                print("alooo->>\(response.self)")
-//                VDOTOKObject<UserResponse>().setData(response)
-//                VDOTOKObject<String>().setToken(response.authToken)
             case 486:
-                print("alooo32->>\(response)")
             default:
                 break
             }
-            complition(.success(response))
+            completion(.success(response))
             
         }
         catch {
-            complition(.failure(error))
+            completion(.failure(error))
         }
     }
 }
