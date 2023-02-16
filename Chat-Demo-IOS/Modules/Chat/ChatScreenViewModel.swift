@@ -77,12 +77,13 @@ protocol ChatScreenViewModel: ChatScreenViewModelInput {
     func viewModelDidLoad()
     func viewModelWillAppear()
     func messageCount() -> Int
-    func sendMessage(text: String)
+    func sendMessage(text: String,subtype: Int?,type: String)
     func itemAt(row: Int) -> (ChatMessage, CellType)
     func receivedMessage(userInfo: [String: AnyObject])
     func dispatchPackage(start: Bool)
     func sendSeenMessage(message: ChatMessage, row: Int)
     func publish(file data: Data, with ext: String, type: Int)
+    func uploadFileApi(with uploadData: Data?,type:String,fileExtension:String)
 }
 
 class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
@@ -94,7 +95,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
     var messages: [ChatMessage] = []
     var user: UserResponse
     
-    init(router: ChatScreenRouter, client: ChatClient, group: Group, user: UserResponse, messages: [ChatMessage]) {
+    init(router: ChatScreenRouter, client: ChatClient, group: Group, user: UserResponse, messages: [ChatMessage]){
         self.router = router
         self.mqtt = client
         self.group = group
@@ -114,20 +115,26 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
     //For all of your viewBindings
     enum Output {
         case reload
+        case showProgress
+        case hideProgress
+        case success
+        case failure(message: String)
         case reloadCell(indexPath: IndexPath)
     }
     
-    func sendMessage(text: String) {
+    func sendMessage(text: String,subtype: Int?,type: String) {
         let now = Date()
         let timeInterval = now.millisecondsSince1970
         let message = MessageModel(id: UUID().uuidString,
                                    to: group.channelName,
                                    key: group.channelKey,
                                    from: user.refID!,
+                                   type: type,
                                    content: text.prefix(400).description,
                                    size: 0,
                                    isGroupMessage: false,
                                    status: 0,
+                                   subtype: subtype,
                                    date: timeInterval)
         mqtt.publish(message: message)
         dispatchPackage(start: false)
@@ -146,10 +153,10 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
         let mediaType = userInfo[Constants.mediaType] as? Int
         let date = userInfo[Constants.date] as! UInt64
         
-        
         guard let topic = userInfo[Constants.topicKey] as? String,
               topic == group.channelName
         else { return }
+
         if content.contains("left") {
 //            onlineUsers.removeAll(where: { $0 == username })
 //            actionHandler?(.reloadOnlineUser)
@@ -176,6 +183,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
 
         let chatMessage = ChatMessage(id: id,sender: username, content: content, status: user.refID == username ? .sent :.delivered, date: date)
         messages.append(chatMessage)
+       
         self.output?(.reload)
         
     }
@@ -191,6 +199,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
+                                            subtype: nil,
                                             date: 1622801248314)
             self.mqtt.publish(message: messageModel)
         } else {
@@ -203,6 +212,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
+                                            subtype: nil,
                                             date: 1622801248314)
             self.mqtt.publish(message: messageModel)
         }
@@ -220,7 +230,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
             if user.fullName != message.sender {
                 self.messages[row].status = .seen
             }
-            
+    
                 self.send(receipt: receipt, status: .seen, isMyMessage: user.fullName == message.sender)
         }
         
@@ -299,5 +309,45 @@ extension ChatScreenViewModelImpl {
         let now = Date()
         let timeInterval = now.millisecondsSince1970
         mqtt.publish(file: data, fileExt: ext, topic: group.channelName, key: group.channelKey, from: user.refID!, type: type, date: timeInterval)
+    }
+    
+    func uploadFileApi(with uploadData: Data?,type:String,fileExtension:String) {
+        output?(.showProgress)
+        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
+        var param = [String : String] ()
+        param["auth_token"] = user.authToken?.description
+        param["type"] = "ftp"
+        param["extension"] = fileExtension
+        let url = "https://q-tenant.vdotok.dev/s3upload/"
+        let request = MultipartFormDataRequest(url: URL(string: url)!,param: param,filePathKey: "uploadFile",imageDataKey: uploadData!,boundary: generateBoundaryString(),type:type)
+        let task =  URLSession.shared.dataTask(with: request.asURLRequest()) { [self] data, response, error in
+                guard let data = data, error == nil else {
+                    print(error?.localizedDescription)
+                    return
+                }
+                do {
+                    output?(.hideProgress)
+                    let res = try JSONDecoder().decode(UploadFileResponse.self, from: data)
+                    var fileExtension = res.filetype?.split(separator: "/")
+                    var subtype:Int = 0
+                    if fileExtension?.last == "mp4" || fileExtension?.last == "mov" {
+                       subtype = 2
+                    }else if fileExtension?.last == "png" || fileExtension?.last == "jpeg" || fileExtension?.last == "jpg" {
+                       subtype = 0
+                    }else {
+                       subtype = 3
+                    }
+                    self.sendMessage(text:res.file_name!.description,subtype:subtype,type:"ftp")
+                    
+                    
+                } catch let parseError {
+                    print("JSON Error \(parseError.localizedDescription)")
+                }
+            }
+            
+            task.resume()
+    }
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class outgoingImageCell: UITableViewCell {
     
     @IBOutlet weak var chatImage: UIImageView!
@@ -26,6 +27,7 @@ class outgoingImageCell: UITableViewCell {
     }
     
     func configure(with url: URL?) {
+        
         if let url = url {
             if let data = try? Data(contentsOf: url)
             {

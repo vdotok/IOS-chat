@@ -10,6 +10,19 @@ import Foundation
 import UIKit
 
 struct SignupRequest: Codable, APIRequest {
+    func getBody() -> Data? {
+        do {
+           return try JSONEncoder().encode(self)
+        }
+        catch {
+            return Data()
+        }
+    }
+    
+    func getBoundary() -> String {
+      return ""
+    }
+    
     func getMethod() -> RequestType {
         .POST
     }

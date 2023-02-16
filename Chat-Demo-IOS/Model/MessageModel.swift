@@ -26,12 +26,12 @@ class MessageModel: Message {
                   to: String,
                   key: String,
                   from: String,
-                  type: String = "text",
+                  type: String,
                   content: String,
                   size: Double,
                   isGroupMessage: Bool,
                   status: Int,
-                  subtype: Int? = nil,
+                  subtype: Int?,
                   date: UInt64) {
         self.id = id
         self.to = to

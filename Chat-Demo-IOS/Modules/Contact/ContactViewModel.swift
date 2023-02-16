@@ -115,6 +115,9 @@ extension ContactViewModelImpl {
     func createGroup(with user: User) {
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         let groupName: String = myUser.fullName! + " - " + user.fullName
+        let groupNotification = Constants.groupNotification
+        let groupNotify = sendNotificationGroup(from: myUser.refID!, type: "create", users:[user.refID])
+    
         let request = CreateGroupRequest(groupTitle: groupName, participants: [user.userID], autoCreated: 1)
         output?(.showProgress)
         createGroupStoreAble.createGroup(with: request) { [weak self] (result) in
@@ -124,6 +127,7 @@ extension ContactViewModelImpl {
             case .success(let response):
                 guard let group = response.group, let isExist = response.isalreadyCreated else {return}
                 DispatchQueue.main.async {
+                    self.client!.groupNotification(topic: groupNotification,group:groupNotify)
                     if isExist {
                         self.output?(.groupCreated(group: group, isExit: true))
                     } else {

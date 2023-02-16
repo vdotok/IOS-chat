@@ -132,7 +132,7 @@ extension CreateGroupViewController: UITableViewDataSource, UITableViewDelegate 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupCell", for: indexPath) as! CreateGroupCell
         let item = viewModel.viewModelItem(row: indexPath.row)
-        cell.configure(with: item, selected: viewModel.check(id: item.userID))
+        cell.configure(with: item, selected: viewModel.check(id: item.refID))
         cell.selectionStyle = .none
         return cell
     }
@@ -140,7 +140,7 @@ extension CreateGroupViewController: UITableViewDataSource, UITableViewDelegate 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let user = viewModel.viewModelItem(row: indexPath.row)
-        viewModel.addUser(userId: user.userID, row: indexPath.row)
+        viewModel.addUser(userId: user.userID, row: indexPath.row, refID: user.refID)
 
     }
     

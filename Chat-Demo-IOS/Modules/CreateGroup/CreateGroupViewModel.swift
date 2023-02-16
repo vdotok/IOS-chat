@@ -15,9 +15,22 @@ protocol CreateGroupViewModelInput {
     
 }
 
+class sendNotificationGroup:NotificationGroup, Codable {
+    var from: String
+    var type: String
+    var users:[String]
+    
+    init(from: String ,type: String ,users:[String]) {
+        self.from = from
+        self.type = type
+        self.users = users
+    }
+}
+
 protocol CreateGroupViewModel: CreateGroupViewModelInput {
     var output: CreateGroupViewModelOutput? { get set }
-    var selectedItems: [Int] {get set}
+    var selectedItems:[String] {get set}
+    var selectedItemsUserId:[Int]{get set}
     var contacts: [User] {get set}
     var isSearching: Bool {get set}
     var searchContacts: [User] {get set}
@@ -27,21 +40,22 @@ protocol CreateGroupViewModel: CreateGroupViewModelInput {
     func rowsCount() -> Int
     func viewModelItem(row: Int) -> User
     func filterGroups(with text: String)
-    func deleteUser(id: Int)
-    func addUser(userId:Int, row: Int)
-    func check(id: Int) -> Bool
+    func deleteUser(id:String,userID:Int)
+    func addUser(userId:Int, row: Int,refID:String)
+    func check(id: String) -> Bool
     func createGroup(with title: String)
     func createGroup(with user: User)
 }
 
 class CreateGroupViewModelImpl: CreateGroupViewModel, CreateGroupViewModelInput {
-    
+
     var contacts: [User] = []
     var isSearching: Bool = false
     private let router: CreateGroupRouter
     var output: CreateGroupViewModelOutput?
     var searchContacts: [User] = []
-    var selectedItems = [Int]()
+    var selectedItems = [String]()
+    var selectedItemsUserId = [Int]()
     var client: ChatClient
     var groupStorable: GroupStorable = CreateGroupService(service: NetworkService())
     private let allUserStoreAble: AllUserStoreAble = AllUsersService(service: NetworkService())
@@ -116,33 +130,39 @@ extension CreateGroupViewModelImpl {
         output?(.reload)
     }
     
-    internal func deleteUser(id: Int) {
-        let index = selectedItems.firstIndex(of: id)
-        selectedItems.remove(at: index!)
+    internal func deleteUser(id: String,userID:Int) {
+        let index = selectedItemsUserId.firstIndex(of: userID)
+        let refIndex = selectedItems.firstIndex(of: id)
+        selectedItems.remove(at: refIndex!)
+        selectedItemsUserId.remove(at: index!)
     }
-    func addUser(userId:Int, row: Int) {
-        if selectedItems.contains(userId) {
-           deleteUser(id: userId)
+    func addUser(userId:Int, row: Int,refID:String) {
+        if selectedItemsUserId.contains(userId) {
+           deleteUser(id: refID,userID: userId)
             output?(.updateRow(index: row))
         } else {
-            if selectedItems.count == 4 {
+            if selectedItemsUserId.count == 4 {
                 output?(.failure(message: "You can only select 4 participants"))
                 return
                 
             }
-            selectedItems.append(userId)
+            selectedItemsUserId.append(userId)
+            selectedItems.append(refID)
             output?(.updateRow(index: row))
         }
     }
     
-    func check(id: Int) -> Bool {
+    func check(id: String) -> Bool {
         selectedItems.contains(id) ? false : true
     }
     
     
     func createGroup(with title: String) {
-        
-        let request = CreateGroupRequest(groupTitle: title, participants: selectedItems)
+        guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
+        let groupNotification = Constants.groupNotification
+        let groupNotify = sendNotificationGroup(from: myUser.refID!, type: "create", users: selectedItems)
+    
+        let request = CreateGroupRequest(groupTitle: title, participants: selectedItemsUserId)
         output?(.showProgress)
         groupStorable.createGroup(with: request) { [weak self] (result) in
             guard let self = self else {return }
@@ -151,10 +171,11 @@ extension CreateGroupViewModelImpl {
             case .success(let response):
                 guard let group = response.group else {return }
                 DispatchQueue.main.async {
+                    self.client.groupNotification(topic: groupNotification,group:groupNotify)
                     self.output?(.groupCreated(group: group))
                 }
-                
-                
+
+
             case .failure(let error):
                 self.output?(.failure(message: error.localizedDescription))
                 print(error)
@@ -165,6 +186,9 @@ extension CreateGroupViewModelImpl {
     func createGroup(with user: User) {
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         let groupName: String = myUser.fullName! + " - " + user.fullName
+        let groupNotification = Constants.groupNotification
+        let groupNotify = sendNotificationGroup(from: myUser.refID!, type: "create", users:[user.refID])
+    
         let request = CreateGroupRequest(groupTitle: groupName, participants: [user.userID], autoCreated: 1)
         output?(.showProgress)
         groupStorable.createGroup(with: request) { [weak self] (result) in
@@ -174,6 +198,7 @@ extension CreateGroupViewModelImpl {
             case .success(let response):
                 guard let group = response.group else {return}
                 DispatchQueue.main.async {
+                    self.client.groupNotification(topic: groupNotification,group:groupNotify)
                     self.output?(.groupCreated(group: group))
                 }
                 
