@@ -256,8 +256,8 @@ extension GroupsViewController {
 }
 extension GroupsViewController: PopupDelegate {
     func didTapDismiss(groupName: String?) {
-        guard let id = selectedGroupId, let name = groupName else {return}
         blurView.isHidden = true
+        guard let id = selectedGroupId, let name = groupName else {return}
         viewModel.editGroup(with: name, id: id)
     }
     

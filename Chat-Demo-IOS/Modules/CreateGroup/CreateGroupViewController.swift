@@ -103,8 +103,8 @@ extension CreateGroupViewController {
     @objc func didTappedAdd() {
         if viewModel.selectedItems.count >= 1 {
             if viewModel.selectedItems.count < 2 {
-                guard let user = viewModel.contacts.first else { return }
-                viewModel.createGroup(with: user)
+                let user = viewModel.contacts.first(where: {$0.userID ==  viewModel.selectedItemsUserId.first.self})
+               viewModel.createGroup(with: user!)
                 return
             }
             let vc = CreateGroupPopUp()
