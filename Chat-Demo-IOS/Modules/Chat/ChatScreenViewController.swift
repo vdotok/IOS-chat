@@ -309,13 +309,10 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = viewModel.itemAt(row: indexPath.row)
-       
         switch item.1 {
         case .outGoingText:
-          
             return inComingCell(indexPath: indexPath, item: item.0)
         case .incomingText:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingTextCell", for: indexPath) as! OutgoingTextCell
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             guard let userName = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
@@ -339,7 +336,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingAttachementCell", for: indexPath) as! OutgoingAttachementCell
             cell.url = item.0.fileType!
             cell.delegate = self
-            cell.configure(seen: item.0.status.toImage() ?? "")
+            cell.configure(seen: item.0.status.toImage(readCount: item.0.readCount,participantCount: viewModel.group.participants.count) ?? "")
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
             return cell
@@ -358,7 +355,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.backgroundColor = .appLightGrey
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.configure(with: item.0.fileType)
-            cell.configure(seen: item.0.status.toImage() ?? "")
+            cell.configure(seen: item.0.status.toImage(readCount: item.0.readCount,participantCount: viewModel.group.participants.count) ?? "")
             return cell
         default:
             break
@@ -376,7 +373,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
         cell.timeLabel.font = UIFont(name: "Inter-Regular", size: 14)
         cell.messageStatus.font = UIFont(name: "Inter-Regular", size: 14)
         cell.bubbleView.layer.cornerRadius = 8
-        cell.configure(seen: item.status.toImage() ?? "chupaaang")
+        cell.configure(seen: item.status.toImage(readCount: item.readCount,participantCount: viewModel.group.participants.count) ?? "chupaaang")
         return cell
     }
     

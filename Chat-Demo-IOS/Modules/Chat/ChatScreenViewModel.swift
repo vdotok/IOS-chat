@@ -46,14 +46,18 @@ class ReceiptModel: Receipt,Codable {
 }
 
 extension ReceiptType {
-    func toImage() -> String? {
+    func toImage(readCount:Int,participantCount:Int) -> String? {
         switch self {
         case .sent:
             return ""
         case .delivered:
             return ""
         case .seen:
-            return "Read"
+            if participantCount == 1{
+                return "Read"
+            }else{
+               return "Read" + readCount.description
+            }
         }
     }
 }
@@ -171,9 +175,9 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
         if content.isEmpty {
 //            KRProgressHUD.dismiss()
             if let mediaType = mediaType {
-                messages.append(ChatMessage(id: id, sender: username, content: "", status: user.refID == username ? .sent : .delivered, fileType: fileType, mediaType: MediaType(rawValue: mediaType), date: date))
+                messages.append(ChatMessage(id: id, sender: username, content: "", status: user.refID == username ? .sent : .delivered, fileType: fileType, mediaType: MediaType(rawValue: mediaType), date: date,readCount:0))
             } else {
-                messages.append(ChatMessage(id: id, sender: username, content: "", status: .delivered, fileType: fileType, date: date))
+                messages.append(ChatMessage(id: id, sender: username, content: "", status: .delivered, fileType: fileType, date: date,readCount:0))
             }
            
             output?(.reload)
@@ -181,7 +185,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
             return
         }
 
-        let chatMessage = ChatMessage(id: id,sender: username, content: content, status: user.refID == username ? .sent :.delivered, date: date)
+        let chatMessage = ChatMessage(id: id,sender: username, content: content, status: user.refID == username ? .sent :.delivered, date: date,readCount:0)
         messages.append(chatMessage)
        
         self.output?(.reload)
@@ -297,6 +301,9 @@ extension ChatScreenViewModelImpl: ReceiptDelegate, ReceiptAcknowledge {
         guard user.fullName != receipt.from, let messageIndex = self.messages.firstIndex(where: {$0.id == receipt.messageId}) else {return}
         if  user.refID != receipt.from {
             messages[messageIndex].status = status
+            if (status == .seen) {
+                messages[messageIndex].readCount =  messages[messageIndex].readCount + 1
+            }
             self.output?(.reloadCell(indexPath: IndexPath(row: messageIndex, section: 0)))
         }
        
