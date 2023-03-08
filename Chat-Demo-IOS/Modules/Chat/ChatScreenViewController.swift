@@ -373,7 +373,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
         cell.timeLabel.font = UIFont(name: "Inter-Regular", size: 14)
         cell.messageStatus.font = UIFont(name: "Inter-Regular", size: 14)
         cell.bubbleView.layer.cornerRadius = 8
-        cell.configure(seen: item.status.toImage(readCount: item.readCount,participantCount: viewModel.group.participants.count) ?? "chupaaang")
+        cell.configure(seen: item.status.toImage(readCount: item.readCount,participantCount: viewModel.group.participants.count) ?? "")
         return cell
     }
     
