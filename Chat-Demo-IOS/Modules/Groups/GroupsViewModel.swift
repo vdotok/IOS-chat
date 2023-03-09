@@ -103,13 +103,12 @@ class GroupsViewModelImpl: GroupsViewModel{
     }
     
     func viewModelDidLoad() {
+        self.conncectMqtt()
         fetchGroups()
-       
     }
     
     private func conncectMqtt() {
-         
-        guard let user = VDOTOKObject<UserResponse>().getData(),
+       guard let user = VDOTOKObject<UserResponse>().getData(),
               let host = user.messagingServerMap?.host,
               let serverPort = user.messagingServerMap?.port,
               let port = UInt16(serverPort)
@@ -121,7 +120,7 @@ class GroupsViewModelImpl: GroupsViewModel{
                             userName: userName!,
                             password: password!,
                             reConnectivity: true)
-      mqttClient = ChatClient(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self,groupNotificationDelagte: self)
+       mqttClient = ChatClient(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self,groupNotificationDelagte: self)
         mqttClient?.connect()
         setDelegate()
     }
@@ -241,7 +240,8 @@ extension GroupsViewModelImpl: Connectivity {
         case .DISCONNECTED:
             output?(.disconnected)
             print("disconncted")
-            
+        case .TIMEOUT:
+            self.conncectMqtt()
         }
     }
     
@@ -526,7 +526,7 @@ extension GroupsViewModelImpl {
                 DispatchQueue.main.async {
                     switch response.status {
                     case 503:
-                        self?.output?(.failure(message: response.message ))
+                        self?.output?(.failure(message: response.message))
                     case 500:
                         self?.output?(.failure(message: response.message))
                     case 401:
