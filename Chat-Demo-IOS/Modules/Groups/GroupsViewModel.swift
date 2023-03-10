@@ -325,7 +325,7 @@ extension GroupsViewModelImpl: MessageDelegate {
         }else if message.type == "ftp"{
             guard let user = VDOTOKObject<UserResponse>().getData() else {return}
             //let data = Data(bytes: file.content, count: .content.count)
-            let messageFile = ChatMessage(id: message.id, sender: message.from, content: "", status: .delivered, mediaType:MediaType(rawValue: message.subtype!), date:1622801248314, readCount:0)
+            let messageFile = ChatMessage(id: message.id, sender: message.from, content: "", status: .delivered, mediaType:MediaType(rawValue: message.subType!), date:1622801248314, readCount:0)
             messageFile.fileType = URL(string:message.content)
     
             var tempMessages: [ChatMessage] = []
@@ -346,7 +346,7 @@ extension GroupsViewModelImpl: MessageDelegate {
                                                        Constants.usernameKey: message.from,
                                                        Constants.idKey: messageFile.id,
                                                        Constants.fileKey: messageFile.fileType,
-                                                       Constants.mediaType: message.subtype,
+                                                       Constants.mediaType: message.subType,
                                                        Constants.date: message.date
                                                        
                                             ])

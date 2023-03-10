@@ -250,7 +250,7 @@ extension ChatScreenViewController {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
-                                            subtype: nil,
+                                            subType: nil,
                                             date: 1622801248314)
             self.viewModel.mqtt.publish(message: messageModel)
         } else {
@@ -263,7 +263,7 @@ extension ChatScreenViewController {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
-                                            subtype: nil,
+                                            subType: nil,
                                             date: 1622801248314)
             self.viewModel.mqtt.publish(message: messageModel)
         }

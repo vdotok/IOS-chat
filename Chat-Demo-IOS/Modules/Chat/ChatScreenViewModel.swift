@@ -138,7 +138,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                    size: 0.0,
                                    isGroupMessage: false,
                                    status: 0,
-                                   subtype: subtype,
+                                   subType: subtype,
                                    date: timeInterval)
         mqtt.publish(message: message)
         dispatchPackage(start: false)
@@ -203,7 +203,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
-                                            subtype: nil,
+                                            subType: nil,
                                             date: 1622801248314)
             self.mqtt.publish(message: messageModel)
         } else {
@@ -216,7 +216,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
-                                            subtype: nil,
+                                            subType: nil,
                                             date: 1622801248314)
             self.mqtt.publish(message: messageModel)
         }
