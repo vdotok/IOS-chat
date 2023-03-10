@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SDWebImage
 
 class outgoingImageCell: UITableViewCell {
     
@@ -27,14 +27,7 @@ class outgoingImageCell: UITableViewCell {
     }
     
     func configure(with url: URL?) {
-        
-        if let url = url {
-            if let data = try? Data(contentsOf: url)
-            {
-                let image: UIImage = UIImage(data: data)!
-                chatImage.image = image
-            }
-        }
+        chatImage.sd_setImage(with:url, placeholderImage: UIImage(named: "loading"))
     }
     
     func configure(seen status: String ) {

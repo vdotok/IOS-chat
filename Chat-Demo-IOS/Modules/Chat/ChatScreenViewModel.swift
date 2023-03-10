@@ -135,7 +135,7 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
                                    from: user.refID!,
                                    type: type,
                                    content: text.prefix(400).description,
-                                   size: 0,
+                                   size: 0.0,
                                    isGroupMessage: false,
                                    status: 0,
                                    subtype: subtype,
@@ -329,6 +329,7 @@ extension ChatScreenViewModelImpl {
         let request = MultipartFormDataRequest(url: URL(string: url)!,param: param,filePathKey: "uploadFile",imageDataKey: uploadData!,boundary: generateBoundaryString(),type:type)
         let task =  URLSession.shared.dataTask(with: request.asURLRequest()) { [self] data, response, error in
                 guard let data = data, error == nil else {
+                    output?(.hideProgress)
                     print(error?.localizedDescription)
                     return
                 }
@@ -348,6 +349,7 @@ extension ChatScreenViewModelImpl {
                     
                     
                 } catch let parseError {
+                    output?(.hideProgress)
                     print("JSON Error \(parseError.localizedDescription)")
                 }
             }
