@@ -53,7 +53,7 @@ extension ReceiptType {
         case .delivered:
             return ""
         case .seen:
-            if participantCount == 1{
+            if participantCount <= 2{
                 return "Read"
             }else{
                return "Read" + readCount.description
