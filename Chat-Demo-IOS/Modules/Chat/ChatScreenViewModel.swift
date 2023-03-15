@@ -229,13 +229,12 @@ class ChatScreenViewModelImpl: ChatScreenViewModel, ChatScreenViewModelInput {
             let receipt = ReceiptModel(type: ReceiptType.seen.rawValue,
                                        key: group.channelKey, date: 1622801248314,
                                        messageId: message.id,
-                                       from: user.fullName!,
+                                       from: user.refID!,
                                        topic: group.channelName)
-            if user.fullName != message.sender {
+            if user.refID != message.sender {
                 self.messages[row].status = .seen
             }
-    
-                self.send(receipt: receipt, status: .seen, isMyMessage: user.fullName == message.sender)
+            self.send(receipt: receipt, status: .seen, isMyMessage: user.fullName == message.sender)
         }
         
         
@@ -301,8 +300,16 @@ extension ChatScreenViewModelImpl: ReceiptDelegate, ReceiptAcknowledge {
         guard user.fullName != receipt.from, let messageIndex = self.messages.firstIndex(where: {$0.id == receipt.messageId}) else {return}
         if  user.refID != receipt.from {
             messages[messageIndex].status = status
-            if (status == .seen) {
-                messages[messageIndex].readCount =  messages[messageIndex].readCount + 1
+            if (messages[messageIndex].status  == .seen) {
+                if messages[messageIndex].readParticipant.isEmpty{
+                   messages[messageIndex].readParticipant.append(receipt.from)
+                   messages[messageIndex].readCount =  messages[messageIndex].readCount + 1
+                }else{
+                    if (!messages[messageIndex].readParticipant.contains(receipt.from)) {
+                        messages[messageIndex].readParticipant.append(receipt.from)
+                        messages[messageIndex].readCount =  messages[messageIndex].readCount + 1
+                    }
+                }
             }
             self.output?(.reloadCell(indexPath: IndexPath(row: messageIndex, section: 0)))
         }

@@ -20,9 +20,10 @@ class ChatMessage {
     var mediaType: MediaType?
     var date: UInt64
     var readCount :Int
+    var readParticipant:[String]
     
     
-    init(id: String, sender: String, content: String, status: ReceiptType, fileType: URL? = nil, mediaType: MediaType? = nil, date: UInt64,readCount: Int) {
+    init(id: String, sender: String, content: String, status: ReceiptType, fileType: URL? = nil, mediaType: MediaType? = nil, date: UInt64,readCount: Int = 0,readParticipant :[String] = []) {
         self.id = id
         self.sender = sender
         self.content = content
@@ -31,7 +32,7 @@ class ChatMessage {
         self.mediaType = mediaType
         self.date = date
         self.readCount = readCount
-
+        self.readParticipant = readParticipant
     }
 }
 
@@ -301,7 +302,7 @@ extension GroupsViewModelImpl: MessageDelegate {
         var tempMessages: [ChatMessage] = []
         var unreadMessages: [ChatMessage] = []
         
-            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.fullName!, topic: message.to)
+            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.refID!, topic: message.to)
             
             self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
             let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
@@ -337,7 +338,7 @@ extension GroupsViewModelImpl: MessageDelegate {
             unreadMessages.append(ChatMessage(id: messageFile.id, sender: messageFile.sender, content: messageFile.content, status: .delivered, date: message.date,readCount:0 ))
             messages[topic ?? ""] = tempMessages
             self.unreadMessages[topic ?? ""] = unreadMessages
-            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.fullName!,  topic: topic ?? "")
+            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.refID!,  topic: topic ?? "")
             self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
             let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
             NotificationCenter.default.post(name: name, object: self,
@@ -487,7 +488,7 @@ extension GroupsViewModelImpl: FileDelegate {
         unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date,readCount:0 ))
         messages[file.topic ?? ""] = tempMessages
         self.unreadMessages[file.topic ?? ""] = unreadMessages
-        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.fullName!, topic: file.topic ?? "")
+        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.refID!, topic: file.topic ?? "")
         
         self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == file.from)
            
