@@ -25,6 +25,6 @@ struct Constants {
 
 
 struct AuthenticationConstants {
-    static let PROJECTID = "115G1WZI"
-    static let TENANTSERVER = "q-tenant.vdotok.dev"
+    static let PROJECTID = ""
+    static let TENANTSERVER = ""
 }
