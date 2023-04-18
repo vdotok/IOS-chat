@@ -144,6 +144,19 @@ class GroupsViewModelImpl: GroupsViewModel{
         case disconnected
         case failure(message: String)
     }
+    
+    
+    func sendGroupNotification(groupModel: Group, toUsers: [String], action: GroupNotificationAction){
+        
+        guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
+        
+        let model = GroupNotification(action: action.rawValue, groupModel: groupModel)
+        let createModel = CreateGroupNotification(from: myUser.refID!, data: model, to: toUsers)
+        let jsonData = try! JSONEncoder().encode(createModel)
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        
+        self.mqttClient?.sendGroupNotification(data: jsonString)
+    }
 }
 
 extension GroupsViewModelImpl {
@@ -272,7 +285,8 @@ extension GroupsViewModelImpl: CustomPacketDelegate {
     
 }
 
-extension GroupsViewModelImpl: PresenceStates,GroupNotificationStates {
+extension GroupsViewModelImpl: PresenceStates, GroupNotificationStates {
+    
     func send(presence: [Presence]) {
         self.sendPresence(presence: presence)
     }
@@ -284,9 +298,56 @@ extension GroupsViewModelImpl: PresenceStates,GroupNotificationStates {
     func didFailToSend(reason: String) {
         
     }
-    func groupCreated(group: GroupNotify) {
-        fetchGroups()
+    
+    // GroupNotificationStates callbacks
+    func receivedGroupNotificationData(data: String) {
+        let decoder = JSONDecoder()
+        do {
+            let groupNotification = try decoder.decode(ReceivedGroupNotification.self, from: Data(data.utf8))
+            print(groupNotification)
+            let groupmodel = groupNotification.data.groupModel!
+            switch groupNotification.data.action {
+                
+                case GroupNotificationAction.new.rawValue:
+                    handleNewGroupCreated(groupModel: groupmodel)
+                case GroupNotificationAction.modify.rawValue:
+                    handleGroupModified(groupModel: groupmodel)
+                case GroupNotificationAction.delete.rawValue:
+                    handleGroupDeleted(groupModel: groupmodel)
+                default:
+                    break
+            }
+        } catch {print(error.localizedDescription)}
     }
+    
+    func handleNewGroupCreated(groupModel: Group){
+        if self.groups.first(where: { $0.id == groupModel.id }) == nil {
+            self.groups.insert(groupModel, at: 0)
+            subscribe(group: groupModel)
+            DispatchQueue.main.async {
+                self.output?(.reload)
+            }
+        }
+    }
+    
+    func handleGroupModified(groupModel: Group){
+        let index = self.groups.firstIndex(where: {$0.id == groupModel.id}) ?? -1
+        if(index >= 0){
+            self.groups.remove(at: index)
+            self.groups.insert(groupModel, at: index)
+            DispatchQueue.main.async {
+                self.output?(.reload)
+            }
+        }
+    }
+    
+    func handleGroupDeleted(groupModel: Group){
+        self.groups.removeAll(where: {$0.id == groupModel.id})
+        DispatchQueue.main.async {
+            self.output?(.reload)
+        }
+    }
+    
 }
 
 extension GroupsViewModelImpl: MessageDelegate {
@@ -516,9 +577,6 @@ extension GroupsViewModelImpl: FileDelegate {
 extension GroupsViewModelImpl {
     func deleteGroup(with id: Int) {
         output?(.showProgress)
-        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
-        let groupNotification = Constants.groupNotification
-        let groupNotify = sendNotificationGroup(from: user.refID!, type: "delete", users:groups[id].participants.map{$0.refID})
         let request = DeleteGroupRequest(group_id: groups[id].id)
         deleteStore.delete(with: request) { [weak self] response in
             self?.output?(.hideProgress)
@@ -535,8 +593,9 @@ extension GroupsViewModelImpl {
                     case 600:
                         self?.output?(.failure(message: response.message))
                     case 200:
+                    guard let deletedGroup = self?.groups[id] else {return}
+                    self?.sendGroupNotification(groupModel: deletedGroup, toUsers: deletedGroup.getParticipantsIds(), action: GroupNotificationAction.delete)
                     self?.groups.remove(at: id)
-                    self?.mqttClient?.groupNotification(topic: groupNotification,group:groupNotify)
                     self?.output?(.reload)
                     default:
                     break
@@ -555,9 +614,6 @@ extension GroupsViewModelImpl {
             output?(.failure(message: "one to one group name cannot be updated"))
             return
         }
-        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
-        let groupNotification = Constants.groupNotification
-        let groupNotify = sendNotificationGroup(from: user.refID!, type: "rename", users:groups[id].participants.map{$0.refID})
         output?(.showProgress)
         let request = EditGroupRequest(group_title: title, group_id: groups[id].id)
         editStore.editGroup(with: request) { [weak self] result in
@@ -566,8 +622,9 @@ extension GroupsViewModelImpl {
             switch result {
             case .success(_):
                 self?.groups[id].groupTitle = title
+                guard let editedGroup = self?.groups[id] else {return}
+                self?.sendGroupNotification(groupModel: editedGroup, toUsers: editedGroup.getParticipantsIds(), action: GroupNotificationAction.modify)
                 DispatchQueue.main.async {
-                    self?.mqttClient?.groupNotification(topic: groupNotification,group:groupNotify)
                     self?.output?(.reload)
                 }
                

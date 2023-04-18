@@ -15,17 +15,6 @@ protocol CreateGroupViewModelInput {
     
 }
 
-class sendNotificationGroup:NotificationGroup, Codable {
-    var from: String
-    var type: String
-    var users:[String]
-    
-    init(from: String ,type: String ,users:[String]) {
-        self.from = from
-        self.type = type
-        self.users = users
-    }
-}
 
 protocol CreateGroupViewModel: CreateGroupViewModelInput {
     var output: CreateGroupViewModelOutput? { get set }
@@ -160,7 +149,6 @@ extension CreateGroupViewModelImpl {
     func createGroup(with title: String) {
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         let groupNotification = Constants.groupNotification
-        let groupNotify = sendNotificationGroup(from: myUser.refID!, type: "create", users: selectedItems)
     
         let request = CreateGroupRequest(groupTitle: title, participants: selectedItemsUserId)
         output?(.showProgress)
@@ -170,14 +158,16 @@ extension CreateGroupViewModelImpl {
             switch result {
             case .success(let response):
                 guard let group = response.group else {return }
+                self.sendGroupNotification(groupModel: group, toUser: self.selectedItems.first!)
                 DispatchQueue.main.async {
-                    self.client.groupNotification(topic: groupNotification,group:groupNotify)
                     self.output?(.groupCreated(group: group))
                 }
 
 
             case .failure(let error):
-                self.output?(.failure(message: error.localizedDescription))
+                DispatchQueue.main.async {
+                    self.output?(.failure(message: error.localizedDescription))
+                }
                 print(error)
             }
         }
@@ -186,8 +176,6 @@ extension CreateGroupViewModelImpl {
     func createGroup(with user: User) {
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         let groupName: String = myUser.fullName! + " - " + user.fullName
-        let groupNotification = Constants.groupNotification
-        let groupNotify = sendNotificationGroup(from: myUser.refID!, type: "create", users:[user.refID])
     
         let request = CreateGroupRequest(groupTitle: groupName, participants: [user.userID], autoCreated: 1)
         output?(.showProgress)
@@ -197,8 +185,8 @@ extension CreateGroupViewModelImpl {
             switch result {
             case .success(let response):
                 guard let group = response.group else {return}
+                self.sendGroupNotification(groupModel: group, toUser: user.refID)
                 DispatchQueue.main.async {
-                    self.client.groupNotification(topic: groupNotification,group:groupNotify)
                     self.output?(.groupCreated(group: group))
                 }
                 
@@ -208,6 +196,17 @@ extension CreateGroupViewModelImpl {
             }
         }
         
+    }
+    
+    func sendGroupNotification(groupModel: Group, toUser: String){
+        guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
+        
+        let model = GroupNotification(action: GroupNotificationAction.new.rawValue, groupModel: groupModel)
+        let createModel = CreateGroupNotification(from: myUser.refID!, data: model, to: [toUser])
+        let jsonData = try! JSONEncoder().encode(createModel)
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        
+        self.client.sendGroupNotification(data: jsonString)
     }
     
 }
