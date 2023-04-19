@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0F2D2B45298BB1A700E2559A /* MultipartFormDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D2B44298BB1A700E2559A /* MultipartFormDataRequest.swift */; };
-		0FB1697029C47FED004023EA /* iOSSDKConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB1696329C47D6F004023EA /* iOSSDKConnect.framework */; };
-		0FB1697129C47FED004023EA /* iOSSDKConnect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0FB1696329C47D6F004023EA /* iOSSDKConnect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		18D01BD02685A64200DE549A /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D01BCF2685A64200DE549A /* Swift+Extensions.swift */; };
 		49BF44F2298933A800748AF2 /* UploadFileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BF44F1298933A800748AF2 /* UploadFileResponse.swift */; };
 		5D11F24E265280820038F05F /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D11F249265280820038F05F /* Home.storyboard */; };
@@ -156,20 +154,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0FB1696229C47D6F004023EA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0FB1695D29C47D6F004023EA /* iOSSDKConnect.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0080171725482C730094136E;
-			remoteInfo = iOSSDKConnect;
-		};
-		0FB1696429C47D6F004023EA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0FB1695D29C47D6F004023EA /* iOSSDKConnect.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0080172025482C730094136E;
-			remoteInfo = iOSSDKConnectTests;
-		};
 		18D01BFA2686145B00DE549A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 18D01BF52686145B00DE549A /* MqttClient.xcodeproj */;
@@ -193,7 +177,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0FB1697129C47FED004023EA /* iOSSDKConnect.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -202,7 +185,6 @@
 
 /* Begin PBXFileReference section */
 		0F2D2B44298BB1A700E2559A /* MultipartFormDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormDataRequest.swift; sourceTree = "<group>"; };
-		0FB1695D29C47D6F004023EA /* iOSSDKConnect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = iOSSDKConnect.xcodeproj; path = "../../../../iOS-Bitbucket/ChatSDK/ios-sdk-connect/iOSSDKConnect.xcodeproj"; sourceTree = "<group>"; };
 		18D01BCF2685A64200DE549A /* Swift+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		18D01BF52686145B00DE549A /* MqttClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MqttClient.xcodeproj; path = "../../../chatsdk-ios/MqttClient.xcodeproj"; sourceTree = "<group>"; };
 		49BF44F1298933A800748AF2 /* UploadFileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFileResponse.swift; sourceTree = "<group>"; };
@@ -358,7 +340,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FB1697029C47FED004023EA /* iOSSDKConnect.framework in Frameworks */,
 				ED68A202259887B24A23EFFF /* Pods_Chat_Demo_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,15 +347,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0FB1695E29C47D6F004023EA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0FB1696329C47D6F004023EA /* iOSSDKConnect.framework */,
-				0FB1696529C47D6F004023EA /* iOSSDKConnectTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		18D01BF62686145B00DE549A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,7 +579,6 @@
 		5D57DAC72642964700515FEA /* Chat-Demo-IOS */ = {
 			isa = PBXGroup;
 			children = (
-				0FB1695D29C47D6F004023EA /* iOSSDKConnect.xcodeproj */,
 				5D57CD97268650BF00873AC2 /* vdotokCert.p12 */,
 				5D44E48C264481E8009F8123 /* Common */,
 				5D41C9172643454700D33DAA /* Model */,
@@ -855,10 +826,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 0FB1695E29C47D6F004023EA /* Products */;
-					ProjectRef = 0FB1695D29C47D6F004023EA /* iOSSDKConnect.xcodeproj */;
-				},
-				{
 					ProductGroup = 18D01BF62686145B00DE549A /* Products */;
 					ProjectRef = 18D01BF52686145B00DE549A /* MqttClient.xcodeproj */;
 				},
@@ -871,20 +838,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		0FB1696329C47D6F004023EA /* iOSSDKConnect.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = iOSSDKConnect.framework;
-			remoteRef = 0FB1696229C47D6F004023EA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0FB1696529C47D6F004023EA /* iOSSDKConnectTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = iOSSDKConnectTests.xctest;
-			remoteRef = 0FB1696429C47D6F004023EA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		18D01BFB2686145B00DE549A /* MqttClient.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
