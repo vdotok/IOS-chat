@@ -10,5 +10,6 @@ target 'Chat-Demo-IOS' do
     pod 'IQKeyboardManagerSwift'
     pod 'SDWebImage'
     pod 'VdoTokConnect' , :git => 'https://github.com/vdotok/VdoTokConnect.git'
-    
+    #pod 'ConnectStrategy', :path => '../connect_strategy'
+    #pod 'CocoaMQTT'
 end

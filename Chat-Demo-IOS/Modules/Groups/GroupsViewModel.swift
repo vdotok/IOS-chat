@@ -116,6 +116,7 @@ class GroupsViewModelImpl: GroupsViewModel{
         else {return}
         let userName = user.refID
         let password = user.authorizationToken
+        
         let client = Client(port: port,
                             host:host,
                             userName: userName!,
@@ -210,7 +211,7 @@ extension GroupsViewModelImpl: GroupsViewModelInput  {
 
 extension GroupsViewModelImpl: Connectivity {
     func willConnect() {
-        
+       
     }
     
     func didConnect() {
@@ -233,6 +234,7 @@ extension GroupsViewModelImpl: Connectivity {
     }
     
     func connectionState(status: ConnectionStatus) {
+        print(status)
         switch status {
         case .CONNECTED:
             print("Connected")
@@ -246,8 +248,7 @@ extension GroupsViewModelImpl: Connectivity {
         }
     }
     
-    func didFailToConnect(_: Error) {
-        
+    func didFailToConnect(_ erorr: Error) {
     }
     
     func willReconnect() {

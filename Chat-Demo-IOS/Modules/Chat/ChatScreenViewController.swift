@@ -146,7 +146,7 @@ public class ChatScreenViewController: UIViewController {
     
     
     @IBAction func didTapAttachment(_ sender: UIButton) {
-        
+    
         //                documentPicker.displayPicker()
         let vc = AttachmentViewController()
         vc.modalPresentationStyle = .custom
@@ -574,8 +574,8 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                           animations: {
                             self.blurView.isHidden = true
                           })
-        viewModel.uploadFileApi(with:data,type: MediaType.image.rawValue.description,fileExtension: "PNG")
-       // viewModel.publish(file: data, with: "PNG", type: MediaType.image.rawValue)
+        //viewModel.uploadFileApi(with:data,type: MediaType.image.rawValue.description,fileExtension: "PNG")
+        viewModel.publish(file: data, with: "PNG", type: MediaType.image.rawValue)
     }
     
     func didSelectDocument(data: Data, fileExtension: String) {

@@ -322,6 +322,7 @@ extension ChatScreenViewModelImpl {
     func publish(file data: Data, with ext: String, type: Int) {
         let now = Date()
         let timeInterval = now.millisecondsSince1970
+       
         mqtt.publish(file: data, fileExt: ext, topic: group.channelName, key: group.channelKey, from: user.refID!, type: type, date: timeInterval)
     }
     
