@@ -491,6 +491,7 @@ extension ChatScreenViewController: DidTapAttachmentDelagate {
     func didTapAttachment(url: URL) {
         if url.lastPathComponent == "s3downloadUrl"{
             downloadFile(url:url){ fileurl in
+                print("tress====\(fileurl)")
                 let dc = UIDocumentInteractionController(url: fileurl)
                 dc.delegate = self
                 UINavigationBar.appearance().tintColor = .black
