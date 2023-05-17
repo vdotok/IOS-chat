@@ -12,7 +12,6 @@ import UIKit
 class GroupsBuilder {
 
     func build(with navigationController: UINavigationController?) -> UIViewController {
-        
         let storyboard = UIStoryboard(name: "Groups", bundle: Bundle(for: GroupsBuilder.self))
         let viewController = storyboard.instantiateViewController(withIdentifier: "GroupsViewController") as! GroupsViewController
         let coordinator = GroupsRouter(navigationController: navigationController)

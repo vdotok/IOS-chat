@@ -32,10 +32,12 @@ extension APIRequest {
             request.httpBody = getBody()
         }
         request.addValue("Application/json", forHTTPHeaderField: "Content-Type")
-        if let externalHeader = getToken() {
-            request.addValue(externalHeader.value, forHTTPHeaderField: externalHeader.key)
-        }
-        
+    
+            if let externalHeader = getToken() {
+                request.addValue(externalHeader.value, forHTTPHeaderField: externalHeader.key)
+            }
+            
+       
         return request
     }
     
@@ -55,7 +57,7 @@ extension APIRequest {
     private func getBaseUrl() -> URL {
         let fakeUrl = URL(fileURLWithPath: "")
         guard let baseUrl = URL(string: Configurations.scheme + "://" + AuthenticationConstants.TENANTSERVER + "/" +  Configurations.apiVersion),
-              let component = URLComponents(url: baseUrl.appendingPathComponent(getPath()), resolvingAgainstBaseURL: false), let url = component.url else {
+                let component = URLComponents(url: baseUrl.appendingPathComponent(getPath()), resolvingAgainstBaseURL: false), let url = component.url else {
             print("Unable to create URL components")
             return fakeUrl
         }

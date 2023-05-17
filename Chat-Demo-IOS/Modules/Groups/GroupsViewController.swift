@@ -73,9 +73,7 @@ public class GroupsViewController: UIViewController {
             //handle all your bindings here
             switch output {
             case .showProgress:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     ProgressHud.show(viewController: self)
-                }
             case .hideProgress:
                 ProgressHud.hide()
             case .failure(message: let message):
@@ -216,15 +214,17 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
                                             completionHandler(true)
         }
         let trash = UIContextualAction(style: .destructive,
-                                       title: "Delete") { [weak self] (action, view, completionHandler) in
+                                       title: "Delete") { [weak self] (action, view,completionHandler) in
+        
             self?.viewModel.deleteGroup(with: indexPath.row)
-                                        completionHandler(true)
+            completionHandler(true)
         }
         if viewModel.groups[indexPath.row].participants.count <= 2 {
             let configuration = UISwipeActionsConfiguration(actions: [trash])
             return configuration
         }
         let configuration = UISwipeActionsConfiguration(actions: [edit, trash])
+
         return configuration
     }
 
@@ -256,8 +256,8 @@ extension GroupsViewController {
 }
 extension GroupsViewController: PopupDelegate {
     func didTapDismiss(groupName: String?) {
-        guard let id = selectedGroupId, let name = groupName else {return}
         blurView.isHidden = true
+        guard let id = selectedGroupId, let name = groupName else {return}
         viewModel.editGroup(with: name, id: id)
     }
     

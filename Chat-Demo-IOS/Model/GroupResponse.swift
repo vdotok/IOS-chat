@@ -27,7 +27,7 @@ struct Group: Codable {
     var groupTitle: String
     let id: Int
     let participants: [Participant]
-
+    
     enum CodingKeys: String, CodingKey {
         case adminID = "admin_id"
         case autoCreated = "auto_created"
@@ -36,6 +36,12 @@ struct Group: Codable {
         case createdDatetime = "created_datetime"
         case groupTitle = "group_title"
         case id, participants
+    }
+    
+    func getParticipantsIds() -> [String]{
+        return self.participants.compactMap({ participant in
+            return String(participant.refID)
+        })
     }
 }
 
@@ -56,4 +62,31 @@ struct Participant: Codable {
         case refID = "ref_id"
         case userID = "user_id"
     }
+}
+
+
+
+struct CreateGroupNotification: Codable {
+    
+    public var from: String?
+    public var data: GroupNotification
+    public var to: [String]?
+}
+
+
+struct ReceivedGroupNotification: Codable {
+    let data: GroupNotification
+    let from, id: String?
+}
+
+
+struct GroupNotification: Codable {
+    let action: String
+    let groupModel: Group?
+}
+
+enum GroupNotificationAction: String {
+    case new = "new"
+    case modify = "modify"
+    case delete = "delete"
 }

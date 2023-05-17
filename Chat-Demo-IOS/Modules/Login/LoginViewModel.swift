@@ -77,6 +77,7 @@ extension LoginViewModelImpl {
                 case 401:
                     self.output?(.failure(message: response.message))
                 case 200:
+                    print(response.self)
                     self.output?(.success)
                 default:
                     break

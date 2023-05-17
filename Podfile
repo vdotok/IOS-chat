@@ -8,6 +8,7 @@ target 'Chat-Demo-IOS' do
   # Pods for Chat-Demo-IOS
     pod 'KRProgressHUD'
     pod 'IQKeyboardManagerSwift'
+    pod 'SDWebImage'
     pod 'VdoTokConnect' , :git => 'https://github.com/vdotok/VdoTokConnect.git'
-  
+    
 end

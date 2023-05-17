@@ -19,19 +19,19 @@ class MessageModel: Message {
     var size: Double
     var isGroupMessage: Bool
     var status: Int
-    var subtype: Int?
+    var subType: Int?
     var date: UInt64
     
     internal init(id: String,
                   to: String,
                   key: String,
                   from: String,
-                  type: String = "text",
+                  type: String,
                   content: String,
                   size: Double,
                   isGroupMessage: Bool,
                   status: Int,
-                  subtype: Int? = nil,
+                  subType: Int?,
                   date: UInt64) {
         self.id = id
         self.to = to
@@ -42,7 +42,7 @@ class MessageModel: Message {
         self.size = size
         self.isGroupMessage = isGroupMessage
         self.status = status
-        self.subtype = subtype
+        self.subType = subType
         self.date = date
     }
     

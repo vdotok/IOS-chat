@@ -19,9 +19,11 @@ class ChatMessage {
     var fileType: URL?
     var mediaType: MediaType?
     var date: UInt64
+    var readCount :Int
+    var readParticipant:[String]
     
     
-    init(id: String, sender: String, content: String, status: ReceiptType, fileType: URL? = nil, mediaType: MediaType? = nil, date: UInt64) {
+    init(id: String, sender: String, content: String, status: ReceiptType, fileType: URL? = nil, mediaType: MediaType? = nil, date: UInt64,readCount: Int = 0,readParticipant :[String] = []) {
         self.id = id
         self.sender = sender
         self.content = content
@@ -29,7 +31,8 @@ class ChatMessage {
         self.fileType = fileType
         self.mediaType = mediaType
         self.date = date
-
+        self.readCount = readCount
+        self.readParticipant = readParticipant
     }
 }
 
@@ -80,8 +83,7 @@ protocol GroupsViewModel: GroupsViewModelInput {
     func editGroup(with title: String, id: Int) 
 }
 
-class GroupsViewModelImpl: GroupsViewModel {
-
+class GroupsViewModelImpl: GroupsViewModel{
     private let router: GroupsRouter
     var output: GroupsViewModelOutput?
     var store: AllGroupStroreable
@@ -102,13 +104,12 @@ class GroupsViewModelImpl: GroupsViewModel {
     }
     
     func viewModelDidLoad() {
+        self.conncectMqtt()
         fetchGroups()
-       
     }
     
     private func conncectMqtt() {
-         
-        guard let user = VDOTOKObject<UserResponse>().getData(),
+       guard let user = VDOTOKObject<UserResponse>().getData(),
               let host = user.messagingServerMap?.host,
               let serverPort = user.messagingServerMap?.port,
               let port = UInt16(serverPort)
@@ -117,11 +118,11 @@ class GroupsViewModelImpl: GroupsViewModel {
         let password = user.authorizationToken
         
         let client = Client(port: port,
-                            host: host,
+                            host:host,
                             userName: userName!,
                             password: password!,
                             reConnectivity: true)
-      mqttClient = ChatClient(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self)
+       mqttClient = ChatClient(client: client, presense: self, connectivity: self, messageDelegate: self, customPacketDelegate: self,groupNotificationDelagte: self)
         mqttClient?.connect()
         setDelegate()
     }
@@ -144,17 +145,30 @@ class GroupsViewModelImpl: GroupsViewModel {
         case disconnected
         case failure(message: String)
     }
+    
+    
+    func sendGroupNotification(groupModel: Group, toUsers: [String], action: GroupNotificationAction){
+        
+        guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
+        
+        let model = GroupNotification(action: action.rawValue, groupModel: groupModel)
+        let createModel = CreateGroupNotification(from: myUser.refID!, data: model, to: toUsers)
+        let jsonData = try! JSONEncoder().encode(createModel)
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        
+        self.mqttClient?.sendGroupNotification(data: jsonString)
+    }
 }
 
 extension GroupsViewModelImpl {
     func fetchGroups() {
         let request = AllGroupRequest()
-        self.output?(.showProgress)
+        //self.output?(.showProgress)
         store.fetchGroups(with: request) { [weak self] (response) in
             guard let self = self else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-                self.output?(.hideProgress)
-            })
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+//                self.output?(.hideProgress)
+//            })
             
             switch response {
             case .success(let response):
@@ -168,7 +182,7 @@ extension GroupsViewModelImpl {
                 case 200:
                     if self.mqttClient?.isConnected() ?? false {
                         if response.groups?.count == self.groups.count {
-                            
+                            self.groups = response.groups ?? []
                         }
                         else {
                             guard let fetchedGroups = response.groups  else { return }
@@ -210,7 +224,7 @@ extension GroupsViewModelImpl: GroupsViewModelInput  {
 
 extension GroupsViewModelImpl: Connectivity {
     func willConnect() {
-        
+       
     }
     
     func didConnect() {
@@ -233,6 +247,7 @@ extension GroupsViewModelImpl: Connectivity {
     }
     
     func connectionState(status: ConnectionStatus) {
+        print(status)
         switch status {
         case .CONNECTED:
             print("Connected")
@@ -241,12 +256,12 @@ extension GroupsViewModelImpl: Connectivity {
         case .DISCONNECTED:
             output?(.disconnected)
             print("disconncted")
-            
+        case .TIMEOUT:
+            self.conncectMqtt()
         }
     }
     
-    func didFailToConnect(_: Error) {
-        
+    func didFailToConnect(_ erorr: Error) {
     }
     
     func willReconnect() {
@@ -271,7 +286,8 @@ extension GroupsViewModelImpl: CustomPacketDelegate {
     
 }
 
-extension GroupsViewModelImpl: PresenceStates {
+extension GroupsViewModelImpl: PresenceStates, GroupNotificationStates {
+    
     func send(presence: [Presence]) {
         self.sendPresence(presence: presence)
     }
@@ -284,6 +300,55 @@ extension GroupsViewModelImpl: PresenceStates {
         
     }
     
+    // GroupNotificationStates callbacks
+    func receivedGroupNotificationData(data: String) {
+        let decoder = JSONDecoder()
+        do {
+            let groupNotification = try decoder.decode(ReceivedGroupNotification.self, from: Data(data.utf8))
+            print(groupNotification)
+            let groupmodel = groupNotification.data.groupModel!
+            switch groupNotification.data.action {
+                
+                case GroupNotificationAction.new.rawValue:
+                    handleNewGroupCreated(groupModel: groupmodel)
+                case GroupNotificationAction.modify.rawValue:
+                    handleGroupModified(groupModel: groupmodel)
+                case GroupNotificationAction.delete.rawValue:
+                    handleGroupDeleted(groupModel: groupmodel)
+                default:
+                    break
+            }
+        } catch {print(error.localizedDescription)}
+    }
+    
+    func handleNewGroupCreated(groupModel: Group){
+        if self.groups.first(where: { $0.id == groupModel.id }) == nil {
+            self.groups.insert(groupModel, at: 0)
+            subscribe(group: groupModel)
+            DispatchQueue.main.async {
+                self.output?(.reload)
+            }
+        }
+    }
+    
+    func handleGroupModified(groupModel: Group){
+        let index = self.groups.firstIndex(where: {$0.id == groupModel.id}) ?? -1
+        if(index >= 0){
+            self.groups.remove(at: index)
+            self.groups.insert(groupModel, at: index)
+            DispatchQueue.main.async {
+                self.output?(.reload)
+            }
+        }
+    }
+    
+    func handleGroupDeleted(groupModel: Group){
+        self.groups.removeAll(where: {$0.id == groupModel.id})
+        DispatchQueue.main.async {
+            self.output?(.reload)
+        }
+    }
+    
 }
 
 extension GroupsViewModelImpl: MessageDelegate {
@@ -294,11 +359,12 @@ extension GroupsViewModelImpl: MessageDelegate {
             topic = message.to.split(separator: "/")[1] + "/"
         }
         
+        if message.type == "text" {
+        
         var tempMessages: [ChatMessage] = []
         var unreadMessages: [ChatMessage] = []
         
-        if message.type == "text" {
-            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.fullName!, topic: message.to)
+            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.refID!, topic: message.to)
             
             self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
             let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
@@ -312,14 +378,42 @@ extension GroupsViewModelImpl: MessageDelegate {
             
             tempMessages = messages[topic] ?? []
             unreadMessages = self.unreadMessages[topic] ?? []
-            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
-            unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ))
+            tempMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ,readCount:0))
+            unreadMessages.append(ChatMessage(id: message.id, sender: message.from, content: message.content, status: .delivered, date: message.date ,readCount:0))
             messages[topic] = tempMessages
             self.unreadMessages[topic] = unreadMessages
           
             output?(.reload)
-//            actionHandler?(.reload)
             
+        }else if message.type == "ftp"{
+            guard let user = VDOTOKObject<UserResponse>().getData() else {return}
+            //let data = Data(bytes: file.content, count: .content.count)
+            let messageFile = ChatMessage(id: message.id, sender: message.from, content: "", status: .delivered, mediaType:MediaType(rawValue: message.subType!), date:1622801248314, readCount:0)
+            messageFile.fileType = URL(string:message.content)
+    
+            var tempMessages: [ChatMessage] = []
+            var unreadMessages: [ChatMessage] = []
+            
+            unreadMessages = self.unreadMessages[topic ?? ""] ?? []
+            tempMessages = messages[topic ?? ""] ?? []
+            tempMessages.append(messageFile)
+            unreadMessages.append(ChatMessage(id: messageFile.id, sender: messageFile.sender, content: messageFile.content, status: .delivered, date: message.date,readCount:0 ))
+            messages[topic ?? ""] = tempMessages
+            self.unreadMessages[topic ?? ""] = unreadMessages
+            let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: message.key, date: 1622801248314, messageId: message.id, from: user.refID!,  topic: topic ?? "")
+            self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == message.from)
+            let name = NSNotification.Name(rawValue: "MQTTMessageNotification" + user.fullName!)
+            NotificationCenter.default.post(name: name, object: self,
+                                            userInfo: [Constants.messageKey: "",
+                                                       Constants.topicKey: topic,
+                                                       Constants.usernameKey: message.from,
+                                                       Constants.idKey: messageFile.id,
+                                                       Constants.fileKey: messageFile.fileType,
+                                                       Constants.mediaType: message.subType,
+                                                       Constants.date: message.date
+                                                       
+                                            ])
+            output?(.reload)
         }
     }
     
@@ -362,7 +456,6 @@ extension GroupsViewModelImpl {
     }
     
     func sendPresence(presence: [Presence]) {
-        print(presence.map({ $0.username }))
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         
         let filterPresence = removeDuplicateElements(posts: presence)
@@ -446,19 +539,18 @@ extension GroupsViewModelImpl: FileDelegate {
     func didReceive(file: FilePart, fileURL: URL, date: UInt64) {
         guard let user = VDOTOKObject<UserResponse>().getData() else {return}
         let data = Data(bytes: file.content, count: file.content.count)
-        let message = ChatMessage(id: file.messageId, sender: file.from, content: "", status: .delivered, mediaType: MediaType(rawValue: file.type), date: date)
+        let message = ChatMessage(id: file.messageId, sender: file.from, content: "", status: .delivered, mediaType: MediaType(rawValue: file.type), date: date,readCount:0)
         message.fileType = fileURL
-        
         var tempMessages: [ChatMessage] = []
         var unreadMessages: [ChatMessage] = []
         
         unreadMessages = self.unreadMessages[file.topic ?? ""] ?? []
         tempMessages = messages[file.topic ?? ""] ?? []
         tempMessages.append(message)
-        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date ))
+        unreadMessages.append(ChatMessage(id: message.id, sender: message.sender, content: message.content, status: .delivered, date: message.date,readCount:0 ))
         messages[file.topic ?? ""] = tempMessages
         self.unreadMessages[file.topic ?? ""] = unreadMessages
-        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.fullName!, topic: file.topic ?? "")
+        let receipt = ReceiptModel(type: ReceiptType.delivered.rawValue, key: file.key, date: 1622801248314, messageId: file.messageId, from: user.refID!, topic: file.topic ?? "")
         
         self.send(receipt: receipt, status: .delivered, isMyMessage: user.refID == file.from)
            
@@ -494,7 +586,7 @@ extension GroupsViewModelImpl {
                 DispatchQueue.main.async {
                     switch response.status {
                     case 503:
-                        self?.output?(.failure(message: response.message ))
+                        self?.output?(.failure(message: response.message))
                     case 500:
                         self?.output?(.failure(message: response.message))
                     case 401:
@@ -502,7 +594,8 @@ extension GroupsViewModelImpl {
                     case 600:
                         self?.output?(.failure(message: response.message))
                     case 200:
-                        
+                    guard let deletedGroup = self?.groups[id] else {return}
+                    self?.sendGroupNotification(groupModel: deletedGroup, toUsers: deletedGroup.getParticipantsIds(), action: GroupNotificationAction.delete)
                     self?.groups.remove(at: id)
                     self?.output?(.reload)
                     default:
@@ -530,6 +623,8 @@ extension GroupsViewModelImpl {
             switch result {
             case .success(_):
                 self?.groups[id].groupTitle = title
+                guard let editedGroup = self?.groups[id] else {return}
+                self?.sendGroupNotification(groupModel: editedGroup, toUsers: editedGroup.getParticipantsIds(), action: GroupNotificationAction.modify)
                 DispatchQueue.main.async {
                     self?.output?(.reload)
                 }

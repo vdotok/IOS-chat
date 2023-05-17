@@ -9,6 +9,15 @@
 import Foundation
 
 struct DeleteGroupRequest: APIRequest {
+    func getBody() -> Data? {
+        do {
+           return try JSONEncoder().encode(self)
+        }
+        catch {
+            return Data()
+        }
+    }
+    
     func getMethod() -> RequestType {
         .POST
     }

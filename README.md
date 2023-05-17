@@ -46,7 +46,11 @@ Register at [VdoTok HomePage](https://vdotok.com) to get **TENANT TESTING SERVER
 ### Updating  Project ID and Authentication Token
 *  Get **Project ID** and **TENANT TESTING SERVER** from [Admin Panel](https://console.vdotok.com/login)
 *  In cloned directory,Double-click to open **.xcworkspace file** in Xcode
+<<<<<<< HEAD
 *  In struct AuthenticationConstants **(iOS-chat -> common -> constants)**, replace the values for **PROJECTID** and **TENANTSERVER** with your values
+=======
+*  In struct AuthenticationConstants **(iOS-chat -> common -> constants)**, replace the values for **PROJECTID** and **TENANTSERVER** ( without `https://` ) with your values
+>>>>>>> 4e283a1dfe5e01f74f5e583e7bbb8befea3456f6
 
 ### Building On Device
 *Please be noted that iOSSDKConnect does not work for iOS Simulator*

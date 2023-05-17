@@ -44,11 +44,9 @@ final class NetworkService: Service {
         print("API: \(request.getPath())")
         print("Sending Params: \(String(describing: String(data: request.getBody() ?? Data(), encoding: .utf8)))")
         let request = request.request()
+      
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            if let response = response {
-                print(response)
-            }
             guard let data = data else {
                 completion(.failure(ServiceError.noData))
                 return

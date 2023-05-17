@@ -79,7 +79,7 @@ extension AttachmentViewController: DocumentPickerProtocol {
         if let pickedDoc = document {
             let fileURL = pickedDoc.fileURL
             let fileName = (fileURL.absoluteString as NSString).lastPathComponent
-            let fileExtn = fileName.components(separatedBy: ".")[1]
+            let fileExtn = fileURL.pathExtension
             let documentData: Data = try! Data(contentsOf: fileURL)
             print("There were \(documentData.count) bytes")
             if documentData.count > 6291456 {

@@ -10,6 +10,7 @@ import Foundation
 
 struct Constants {
     static let presence = "emitter/presence/"
+    static let groupNotification = "emitter/notification/"
 //    
 //    //MARK: Key Constants
     static let usernameKey = "username"
@@ -20,6 +21,7 @@ struct Constants {
     static let mediaType = "type"
     static let date = "date"
 }
+
 
 
 struct AuthenticationConstants {

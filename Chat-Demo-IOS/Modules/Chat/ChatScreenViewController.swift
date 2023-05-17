@@ -10,7 +10,7 @@ import UIKit
 import IQKeyboardManagerSwift
 
 public class ChatScreenViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextField: UITextView!
     @IBOutlet weak var messageInputHieght: NSLayoutConstraint!
@@ -54,7 +54,17 @@ public class ChatScreenViewController: UIViewController {
         bindViewModel()
         viewModel.viewModelDidLoad()
         notificationsListners()
-        titleLabel.text = viewModel.group.groupTitle
+        groupNameSet()
+    }
+    
+    func groupNameSet(){
+        guard let user = VDOTOKObject<UserResponse>().getData() else {return}
+        if viewModel.group.participants.count <= 2 {
+            let data =  viewModel.group.participants.filter({$0.refID != user.refID})
+            titleLabel.text = data.first?.fullName
+        } else {
+            titleLabel.text = viewModel.group.groupTitle
+        }
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -71,9 +81,9 @@ public class ChatScreenViewController: UIViewController {
         super.viewWillDisappear(animated)
         iqKeyBoard(isEnable: true)
     }
-
+    
     fileprivate func bindViewModel() {
-
+        
         viewModel.output = { [weak self] output in
             //handle all your bindings here
             guard let self = self else { return }
@@ -81,16 +91,24 @@ public class ChatScreenViewController: UIViewController {
             case .reload:
                 UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
                     let reloadIndexPath = IndexPath(item: self.viewModel.messages.count - 1, section: 0)
-                        self.tableView.beginUpdates()
-                        self.tableView.insertRows(at:[reloadIndexPath], with: .fade)
-                        self.tableView.endUpdates()
-                        self.tableView.scrollToRow(at: reloadIndexPath, at: .bottom, animated: false)
-
-                    }, completion: nil)
+                    self.tableView.beginUpdates()
+                    self.tableView.insertRows(at:[reloadIndexPath], with: .fade)
+                    self.tableView.endUpdates()
+                    self.tableView.scrollToRow(at: reloadIndexPath, at: .bottom, animated: false)
+                    
+                }, completion: nil)
             case .reloadCell(indexPath: let indexPath):
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
+            case .showProgress:
+                ProgressHud.show(viewController: self)
+            case .hideProgress:
+                ProgressHud.hide()
+            case .failure(message: let message):
+                ProgressHud.showError(message: message, viewController: self)
+            case .success:
+                print("success image")
             }
         }
     }
@@ -100,7 +118,7 @@ public class ChatScreenViewController: UIViewController {
                                         object: self,
                                         userInfo: ["channelName" : self.viewModel.group.channelName,
                                                    "chatMessages": self.viewModel.messages]
-                                            )
+        )
         navigationController?.popToRootViewController(animated: true)
     }
     
@@ -114,7 +132,7 @@ public class ChatScreenViewController: UIViewController {
         let messageText = messageTextField.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if messageText.count != 0 {
-            viewModel.sendMessage(text: messageTextField.text!)
+            viewModel.sendMessage(text: messageTextField.text!,subtype:nil,type: "text")
             self.messageTextField.text = ""
             self.messageTextField.checkPlaceholder()
             sendMessageButton.tintColor = .appDarkGray
@@ -123,12 +141,13 @@ public class ChatScreenViewController: UIViewController {
                 self.messageInputHieght.constant = height
             }
         }
-       
+        
     }
     
     
     @IBAction func didTapAttachment(_ sender: UIButton) {
-//                documentPicker.displayPicker()
+    
+        //                documentPicker.displayPicker()
         let vc = AttachmentViewController()
         vc.modalPresentationStyle = .custom
         vc.modalTransitionStyle = .crossDissolve
@@ -160,10 +179,8 @@ public class ChatScreenViewController: UIViewController {
             titleStackView.spacing = 20.0
         }
     }
-    
-    
 }
-
+    
 extension ChatScreenViewController {
     func configureAppearance() {
         registerCells()
@@ -233,6 +250,7 @@ extension ChatScreenViewController {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
+                                            subType: nil,
                                             date: 1622801248314)
             self.viewModel.mqtt.publish(message: messageModel)
         } else {
@@ -245,6 +263,7 @@ extension ChatScreenViewController {
                                             size: 0,
                                             isGroupMessage: false,
                                             status: 0,
+                                            subType: nil,
                                             date: 1622801248314)
             self.viewModel.mqtt.publish(message: messageModel)
         }
@@ -290,13 +309,10 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = viewModel.itemAt(row: indexPath.row)
-       
         switch item.1 {
         case .outGoingText:
-          
             return inComingCell(indexPath: indexPath, item: item.0)
         case .incomingText:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingTextCell", for: indexPath) as! OutgoingTextCell
             viewModel.sendSeenMessage(message: item.0, row: indexPath.row)
             guard let userName = viewModel.group.participants.filter({$0.refID == item.0.sender}).first else { return UITableViewCell() }
@@ -320,7 +336,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             let cell = tableView.dequeueReusableCell(withIdentifier: "OutgoingAttachementCell", for: indexPath) as! OutgoingAttachementCell
             cell.url = item.0.fileType!
             cell.delegate = self
-            cell.configure(seen: item.0.status.toImage() ?? "")
+            cell.configure(seen: item.0.status.toImage(readCount: item.0.readCount,participantCount: viewModel.group.participants.count) ?? "")
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.backgroundColor = .appLightGrey
             return cell
@@ -339,7 +355,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
             cell.backgroundColor = .appLightGrey
             cell.timeLabel.text = item.0.date.toDateTime.toTimeString
             cell.configure(with: item.0.fileType)
-            cell.configure(seen: item.0.status.toImage() ?? "")
+            cell.configure(seen: item.0.status.toImage(readCount: item.0.readCount,participantCount: viewModel.group.participants.count) ?? "")
             return cell
         default:
             break
@@ -357,7 +373,7 @@ extension ChatScreenViewController: UITableViewDataSource, UITableViewDelegate{
         cell.timeLabel.font = UIFont(name: "Inter-Regular", size: 14)
         cell.messageStatus.font = UIFont(name: "Inter-Regular", size: 14)
         cell.bubbleView.layer.cornerRadius = 8
-        cell.configure(seen: item.status.toImage() ?? "chupaaang")
+        cell.configure(seen: item.status.toImage(readCount: item.readCount,participantCount: viewModel.group.participants.count) ?? "")
         return cell
     }
     
@@ -471,14 +487,66 @@ extension ChatScreenViewController: DocumentPickerProtocol {
 }
 
 extension ChatScreenViewController: DidTapAttachmentDelagate {
+    ///////////////////////////////
     func didTapAttachment(url: URL) {
-        let dc = UIDocumentInteractionController(url: url)
-        dc.delegate = self
-        UINavigationBar.appearance().tintColor = .black
-        dc.presentPreview(animated: true)
+        if url.lastPathComponent == "s3downloadUrl"{
+            downloadFile(url:url){ fileurl in
+                let dc = UIDocumentInteractionController(url: fileurl)
+                dc.delegate = self
+                UINavigationBar.appearance().tintColor = .black
+                dc.presentPreview(animated: true)
+            }
+        }else{
+            let dc = UIDocumentInteractionController(url: url)
+            dc.delegate = self
+            UINavigationBar.appearance().tintColor = .black
+            dc.presentPreview(animated: true)
+        }
+        
     }
-    
 }
+
+func downloadFile(url:URL,completion: @escaping (URL) -> ()) {
+    let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    let path = url.absoluteString.split(separator: "=")
+    let destinationUrl = docsUrl?.appendingPathComponent(path.last!.description)
+    if let destinationUrl = destinationUrl {
+        if FileManager().fileExists(atPath: destinationUrl.path) {
+            print("File already exists")
+            DispatchQueue.main.async {
+                completion(destinationUrl)
+            }
+        } else {
+            let urlRequest = URLRequest(url: url)
+            let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+                if let error = error {
+                    print("Request error: ", error)
+                    return
+                }
+
+                guard let response = response as? HTTPURLResponse else { return }
+
+                if response.statusCode == 200 {
+                    guard let data = data else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        do {
+                            try data.write(to: destinationUrl, options: Data.WritingOptions.atomic)
+                            DispatchQueue.main.async {
+                                completion(destinationUrl)
+                            }
+                        } catch let error {
+                            print("Error decoding: ", error)
+                        }
+                    }
+                }
+            }
+            dataTask.resume()
+        }
+    }
+}
+
 
 extension ChatScreenViewController: UIDocumentInteractionControllerDelegate {
     public func documentInteractionControllerViewControllerForPreview
@@ -492,10 +560,9 @@ extension ChatScreenViewController: ImagePickerDelegate {
         if let image = image {
             let jpegData = image.jpegData(compressionQuality: 0.2)
             let pngData = image.pngData()
-            viewModel.publish(file: jpegData!, with: "PNG", type: MediaType.image.rawValue)
+            viewModel.uploadFileApi(with:pngData!,type: MediaType.image.rawValue.description,fileExtension: "PNG")
         }
     }
-    
     
 }
 
@@ -507,6 +574,7 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                           animations: {
                             self.blurView.isHidden = true
                           })
+        //viewModel.uploadFileApi(with:data,type: MediaType.image.rawValue.description,fileExtension: "PNG")
         viewModel.publish(file: data, with: "PNG", type: MediaType.image.rawValue)
     }
     
@@ -518,19 +586,19 @@ extension ChatScreenViewController: AttachmentPickerDelegate {
                           })
         presentedViewController?.dismiss(animated: true, completion: nil)
 
-        var mediaType: MediaType = .file
-        if fileExtension == "MP4" {
-            mediaType = .video
+        var mediaType: MediaType =  MediaType.file
+        if fileExtension == "MP4" || fileExtension == "MOV" {
+            mediaType = MediaType.video
         }
-        else if fileExtension == "PNG" {
-            mediaType = .image
+        else if fileExtension == "PNG" || fileExtension == "JPG" || fileExtension == "JPEG" {
+            mediaType =  MediaType.image
         }
         else {
-            mediaType = .file
+            mediaType =  MediaType.file
         }
         
-        
-        viewModel.publish(file: data, with: fileExtension, type: mediaType.rawValue)
+        viewModel.uploadFileApi(with:data,type:mediaType.rawValue.description,fileExtension:fileExtension)
+        //viewModel.publish(file: data, with: fileExtension, type: mediaType.rawValue)
     }
     
     func didCancel() {
