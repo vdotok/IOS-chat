@@ -147,7 +147,7 @@ class GroupsViewModelImpl: GroupsViewModel{
     }
     
     
-    func sendGroupNotification(groupModel: Group, toUsers: [String], action: GroupNotificationAction){
+    func sendGroupNotification(groupModel: CreateGroupResponse, toUsers: [String], action: GroupNotificationAction){
         
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         
@@ -321,29 +321,29 @@ extension GroupsViewModelImpl: PresenceStates, GroupNotificationStates {
         } catch {print(error.localizedDescription)}
     }
     
-    func handleNewGroupCreated(groupModel: Group){
-        if self.groups.first(where: { $0.id == groupModel.id }) == nil {
-            self.groups.insert(groupModel, at: 0)
-            subscribe(group: groupModel)
+    func handleNewGroupCreated(groupModel: CreateGroupResponse){
+        if self.groups.first(where: { $0.id == groupModel.group!.id }) == nil {
+            self.groups.insert(groupModel.group!, at: 0)
+            subscribe(group: groupModel.group!)
             DispatchQueue.main.async {
                 self.output?(.reload)
             }
         }
     }
     
-    func handleGroupModified(groupModel: Group){
-        let index = self.groups.firstIndex(where: {$0.id == groupModel.id}) ?? -1
+    func handleGroupModified(groupModel: CreateGroupResponse){
+        let index = self.groups.firstIndex(where: {$0.id == groupModel.group!.id}) ?? -1
         if(index >= 0){
             self.groups.remove(at: index)
-            self.groups.insert(groupModel, at: index)
+            self.groups.insert(groupModel.group!, at: index)
             DispatchQueue.main.async {
                 self.output?(.reload)
             }
         }
     }
     
-    func handleGroupDeleted(groupModel: Group){
-        self.groups.removeAll(where: {$0.id == groupModel.id})
+    func handleGroupDeleted(groupModel: CreateGroupResponse){
+        self.groups.removeAll(where: {$0.id == groupModel.group!.id})
         DispatchQueue.main.async {
             self.output?(.reload)
         }
@@ -595,7 +595,8 @@ extension GroupsViewModelImpl {
                         self?.output?(.failure(message: response.message))
                     case 200:
                     guard let deletedGroup = self?.groups[id] else {return}
-                    self?.sendGroupNotification(groupModel: deletedGroup, toUsers: deletedGroup.getParticipantsIds(), action: GroupNotificationAction.delete)
+                        let groupModel = CreateGroupResponse(group: self?.groups[id], message: response.message, processTime: response.processTime, status:response.status, isalreadyCreated: true)
+                    self?.sendGroupNotification(groupModel: groupModel, toUsers: deletedGroup.getParticipantsIds(), action: GroupNotificationAction.delete)
                     self?.groups.remove(at: id)
                     self?.output?(.reload)
                     default:
@@ -621,10 +622,11 @@ extension GroupsViewModelImpl {
             
             self?.output?(.hideProgress)
             switch result {
-            case .success(_):
+            case .success(let result):
                 self?.groups[id].groupTitle = title
                 guard let editedGroup = self?.groups[id] else {return}
-                self?.sendGroupNotification(groupModel: editedGroup, toUsers: editedGroup.getParticipantsIds(), action: GroupNotificationAction.modify)
+                let groupModel = CreateGroupResponse(group: self?.groups[id], message: result.message, processTime: result.processTime, status:result.status, isalreadyCreated: true)
+                self?.sendGroupNotification(groupModel: groupModel, toUsers: editedGroup.getParticipantsIds(), action: GroupNotificationAction.modify)
                 DispatchQueue.main.async {
                     self?.output?(.reload)
                 }

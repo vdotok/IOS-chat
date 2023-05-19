@@ -158,7 +158,7 @@ extension CreateGroupViewModelImpl {
             switch result {
             case .success(let response):
                 guard let group = response.group else {return }
-                self.sendGroupNotification(groupModel: group, toUser: self.selectedItems)
+                self.sendGroupNotification(groupModel: response, toUser: self.selectedItems)
                 DispatchQueue.main.async {
                     self.output?(.groupCreated(group: group))
                 }
@@ -185,7 +185,7 @@ extension CreateGroupViewModelImpl {
             switch result {
             case .success(let response):
                 guard let group = response.group else {return}
-                self.sendGroupNotification(groupModel: group, toUser: [user.refID])
+                self.sendGroupNotification(groupModel: response, toUser: [user.refID])
                 DispatchQueue.main.async {
                     self.output?(.groupCreated(group: group))
                 }
@@ -198,7 +198,7 @@ extension CreateGroupViewModelImpl {
         
     }
     
-    func sendGroupNotification(groupModel: Group, toUser: [String]){
+    func sendGroupNotification(groupModel: CreateGroupResponse, toUser: [String]){
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         
         let model = GroupNotification(action: GroupNotificationAction.new.rawValue, groupModel: groupModel)

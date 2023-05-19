@@ -82,7 +82,7 @@ struct ReceivedGroupNotification: Codable {
 
 struct GroupNotification: Codable {
     let action: String
-    let groupModel: Group?
+    let groupModel: CreateGroupResponse?
 }
 
 enum GroupNotificationAction: String {

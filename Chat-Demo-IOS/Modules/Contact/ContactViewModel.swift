@@ -124,7 +124,7 @@ extension ContactViewModelImpl {
             switch result {
             case .success(let response):
                 guard let group = response.group, let isExist = response.isalreadyCreated else {return}
-                self.sendGroupNotification(groupModel: group, toUser: user.refID)
+                self.sendGroupNotification(groupModel: response, toUser: user.refID)
                 
                 DispatchQueue.main.async {
                     if isExist {
@@ -142,7 +142,7 @@ extension ContactViewModelImpl {
         
     }
     
-    func sendGroupNotification(groupModel: Group, toUser: String){
+    func sendGroupNotification(groupModel: CreateGroupResponse, toUser: String){
         
         guard let myUser = VDOTOKObject<UserResponse>().getData() else {return}
         let model = GroupNotification(action: GroupNotificationAction.new.rawValue, groupModel: groupModel)
