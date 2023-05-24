@@ -44,6 +44,9 @@ class AttachmentViewController: UIViewController {
       
     }
     
+    @IBAction func didTapAudio(_ sender: Any) {
+        documentPicker.displayAudioPicker()
+    }
     
     @IBAction func didTapAlbum(_ sender: UIButton) {
         imagePicker.action(for: .photoLibrary)

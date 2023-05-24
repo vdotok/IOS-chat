@@ -41,6 +41,12 @@ class DocumentPicker: NSObject {
         self.delegate = delegate
     }
     
+    func displayAudioPicker(){
+        self.picker = UIDocumentPickerViewController(documentTypes: ["public.audio"], in: .import)
+        guard let documentPicker = picker else {return }
+        picker?.delegate = self
+        presenetedViewController?.present(documentPicker, animated: true, completion:  nil)
+    }
     
     func displayPicker() {
         self.picker =  UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
