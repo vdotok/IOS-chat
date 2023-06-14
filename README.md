@@ -43,7 +43,7 @@ If command is not found then you don’t have Cocoapods installed on your system
 ### Project Signup and Project ID
 *  Register at [VdoTok HomePage](https://vdotok.com) to get **TENANT TESTING SERVER** and **PROJECT ID**
 *  In cloned directory,Double-click to open **.xcworkspace file** in Xcode
-*  In struct AuthenticationConstants **(iOS-chat -> common -> constants)**, replace the values for **PROJECTID** and **TENANTSERVER** ( without `https://` ) with your values
+*  In struct AuthenticationConstants **(iOS-chat -> common -> constants)**, replace the values for **PROJECTID** and **TENANTSERVER** with your values
 
 ### Building On Device
 *Please be noted that iOSSDKConnect does not work for iOS Simulator*
