@@ -91,7 +91,8 @@ extension ContactViewModelImpl {
                 case 401:
                     self.output?(.failure(message: response.message))
                 case 200:
-                    self.contacts = response.users
+                    guard let user = VDOTOKObject<UserResponse>().getData() else {return}
+                    self.contacts = response.users.filter({ $0.userID != user.userID})
                     self.searchContacts = self.contacts
                     DispatchQueue.main.async {
                         self.output?(.reload)
