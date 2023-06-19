@@ -120,6 +120,9 @@ extension QRScannerViewController {
             let model  = try JSONDecoder().decode(AuthenticationModel.self, from: data)
             UserDefaults.baseUrl = model.tenantApiUrl
             UserDefaults.projectId = model.projectId
+            AuthenticationConstants.PROJECTID = model.projectId
+            AuthenticationConstants.TENANTSERVER = model.tenantApiUrl
+            
         } catch (let error) {
             print(error)
         }
