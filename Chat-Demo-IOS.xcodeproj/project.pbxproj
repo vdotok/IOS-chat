@@ -10,6 +10,12 @@
 		0F2D2B45298BB1A700E2559A /* MultipartFormDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2D2B44298BB1A700E2559A /* MultipartFormDataRequest.swift */; };
 		18D01BD02685A64200DE549A /* Swift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D01BCF2685A64200DE549A /* Swift+Extensions.swift */; };
 		49BF44F2298933A800748AF2 /* UploadFileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BF44F1298933A800748AF2 /* UploadFileResponse.swift */; };
+		49E1666F2A433BED000B828A /* QRScannerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666A2A433BEC000B828A /* QRScannerBuilder.swift */; };
+		49E166702A433BED000B828A /* QRScanner.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E1666B2A433BEC000B828A /* QRScanner.storyboard */; };
+		49E166712A433BED000B828A /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666C2A433BEC000B828A /* QRScannerViewController.swift */; };
+		49E166722A433BED000B828A /* QRScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666D2A433BED000B828A /* QRScannerViewModel.swift */; };
+		49E166732A433BED000B828A /* QRScannerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666E2A433BED000B828A /* QRScannerRouter.swift */; };
+		49E166752A433C17000B828A /* AuthenticationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E166742A433C17000B828A /* AuthenticationModel.swift */; };
 		5D11F24E265280820038F05F /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D11F249265280820038F05F /* Home.storyboard */; };
 		5D11F24F265280820038F05F /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11F24A265280820038F05F /* HomeRouter.swift */; };
 		5D11F250265280820038F05F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11F24B265280820038F05F /* HomeViewController.swift */; };
@@ -187,6 +193,12 @@
 		18D01BCF2685A64200DE549A /* Swift+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		18D01BF52686145B00DE549A /* MqttClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MqttClient.xcodeproj; path = "../../../chatsdk-ios/MqttClient.xcodeproj"; sourceTree = "<group>"; };
 		49BF44F1298933A800748AF2 /* UploadFileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFileResponse.swift; sourceTree = "<group>"; };
+		49E1666A2A433BEC000B828A /* QRScannerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerBuilder.swift; sourceTree = "<group>"; };
+		49E1666B2A433BEC000B828A /* QRScanner.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRScanner.storyboard; sourceTree = "<group>"; };
+		49E1666C2A433BEC000B828A /* QRScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
+		49E1666D2A433BED000B828A /* QRScannerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerViewModel.swift; sourceTree = "<group>"; };
+		49E1666E2A433BED000B828A /* QRScannerRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerRouter.swift; sourceTree = "<group>"; };
+		49E166742A433C17000B828A /* AuthenticationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationModel.swift; sourceTree = "<group>"; };
 		5D11F249265280820038F05F /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		5D11F24A265280820038F05F /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		5D11F24B265280820038F05F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -351,6 +363,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		49E166692A433BBE000B828A /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				49E1666B2A433BEC000B828A /* QRScanner.storyboard */,
+				49E1666A2A433BEC000B828A /* QRScannerBuilder.swift */,
+				49E1666E2A433BED000B828A /* QRScannerRouter.swift */,
+				49E1666C2A433BEC000B828A /* QRScannerViewController.swift */,
+				49E1666D2A433BED000B828A /* QRScannerViewModel.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
 		5D11F2482652806C0038F05F /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +478,7 @@
 		5D41C9172643454700D33DAA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				49E166742A433C17000B828A /* AuthenticationModel.swift */,
 				5D41C9182643455700D33DAA /* CheckUsernameRepsonse.swift */,
 				5D41C9202643E7D500D33DAA /* UserResponse.swift */,
 				5D41C93D2644643F00D33DAA /* GroupResponse.swift */,
@@ -726,6 +751,7 @@
 		5DFE71D72642AE1600F22B66 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				49E166692A433BBE000B828A /* QRCode */,
 				5DDC5C6F26567A5700663338 /* CreateGroup */,
 				5DDC5C2B26564D2F00663338 /* Contact */,
 				5D11F26B2653D54A0038F05F /* Chat */,
@@ -873,6 +899,7 @@
 				5D11F26426528D930038F05F /* Manrope-Light.ttf in Resources */,
 				5DDC5C6C2656714800663338 /* ContactCell.xib in Resources */,
 				5D458CDC26551BE300AC785D /* Inter-Regular.ttf in Resources */,
+				49E166702A433BED000B828A /* QRScanner.storyboard in Resources */,
 				5D6F4CDC265E721200E21E52 /* AudioVC.xib in Resources */,
 				5D458CE126551BE300AC785D /* Inter-Light.ttf in Resources */,
 				5DDC5C622656684D00663338 /* Contact.storyboard in Resources */,
@@ -948,6 +975,7 @@
 				5D91F74D2665852200F12715 /* outgoingImageCell.swift in Sources */,
 				5D41C9242643E81700D33DAA /* SignupService.swift in Sources */,
 				5D57CD6E2685F29700873AC2 /* EditGroupRequest.swift in Sources */,
+				49E166722A433BED000B828A /* QRScannerViewModel.swift in Sources */,
 				5D41C94F2644677700D33DAA /* GroupsViewModel.swift in Sources */,
 				5DFE71E22642AE4000F22B66 /* SignUpViewModel.swift in Sources */,
 				5D41C9142643440700D33DAA /* ObjectTranslation.swift in Sources */,
@@ -966,6 +994,7 @@
 				5D11F2732653D56A0038F05F /* ChatScreenRouter.swift in Sources */,
 				5D41C909264340C300D33DAA /* ValidateUserNameRequest.swift in Sources */,
 				5D41C9272643EC5100D33DAA /* LoginRequest.swift in Sources */,
+				49E1666F2A433BED000B828A /* QRScannerBuilder.swift in Sources */,
 				5D41C9372643F16400D33DAA /* LoginService.swift in Sources */,
 				5DFE71DF2642AE4000F22B66 /* SignUpRouter.swift in Sources */,
 				5D57CD6C2685E98500873AC2 /* DeleteGroupService.swift in Sources */,
@@ -983,13 +1012,16 @@
 				5D41C93E2644643F00D33DAA /* GroupResponse.swift in Sources */,
 				5DF35FDC265518E5000EB9ED /* Constants.swift in Sources */,
 				5D60CAEA265B8A1400146F47 /* AllUsersService.swift in Sources */,
+				49E166732A433BED000B828A /* QRScannerRouter.swift in Sources */,
 				5D91F7A02669095900F12715 /* AuthenticationService.swift in Sources */,
 				5DDC5C6B2656714800663338 /* ContactCell.swift in Sources */,
 				5D11F24F265280820038F05F /* HomeRouter.swift in Sources */,
+				49E166712A433BED000B828A /* QRScannerViewController.swift in Sources */,
 				49BF44F2298933A800748AF2 /* UploadFileResponse.swift in Sources */,
 				5D794A0A265BE1F700837B91 /* CreateGroupService.swift in Sources */,
 				5D41C9302643EFB500D33DAA /* LoginRouter.swift in Sources */,
 				5DF35FD226550966000EB9ED /* OutgoingTextCell.swift in Sources */,
+				49E166752A433C17000B828A /* AuthenticationModel.swift in Sources */,
 				5D91F7412665556A00F12715 /* OutgoingAttachementCell.swift in Sources */,
 				5DFE71CD2642AD8200F22B66 /* Service.swift in Sources */,
 				5D44E48F26448214009F8123 /* VDOTOKObject.swift in Sources */,

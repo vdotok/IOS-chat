@@ -104,6 +104,10 @@ class GroupsViewModelImpl: GroupsViewModel{
     }
     
     func viewModelDidLoad() {
+        if AuthenticationConstants.TENANTSERVER.isEmpty && AuthenticationConstants.PROJECTID.isEmpty {
+            AuthenticationConstants.TENANTSERVER = UserDefaults.baseUrl
+            AuthenticationConstants.PROJECTID = UserDefaults.projectId
+        }
         self.conncectMqtt()
         fetchGroups()
     }
