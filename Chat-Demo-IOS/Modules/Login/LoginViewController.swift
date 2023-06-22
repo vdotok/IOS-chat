@@ -25,6 +25,13 @@ public class LoginViewController: UIViewController {
         viewModel.viewModelDidLoad()
     }
     
+    @IBAction func didTapScanner(_ sender: Any) {
+        let builder = QRScannerBuilder().build(with: UINavigationController())
+             builder.modalPresentationStyle = .fullScreen
+             builder.modalTransitionStyle = .crossDissolve
+             self.present(builder, animated: true, completion: nil)
+      }
+    
     @IBAction func didTapLogin(_ sender: UIButton) {
         guard let userName = email.text, let password = password.text else {return }
         if (AuthenticationConstants.PROJECTID.isEmpty && AuthenticationConstants.TENANTSERVER.isEmpty) {

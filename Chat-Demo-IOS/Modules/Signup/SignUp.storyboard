@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yNj-G0-2LL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yNj-G0-2LL">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -34,8 +35,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5VG-hP-ihG">
                                         <rect key="frame" x="41.333333333333343" y="136.33333333333334" width="331.33333333333326" height="463.33333333333326"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up to your account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usm-ne-iQc">
-                                                <rect key="frame" x="53.999999999999986" y="32" width="223.33333333333331" height="27.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usm-ne-iQc">
+                                                <rect key="frame" x="127.66666666666666" y="32" width="76" height="27.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="Manrope-Medium" family="Manrope" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -96,13 +97,27 @@
                                                     </button>
                                                 </subviews>
                                             </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mSH-1K-cHr">
+                                                <rect key="frame" x="266.33333333333337" y="31" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="I8d-TA-X7f"/>
+                                                    <constraint firstAttribute="height" constant="30" id="Mgx-Cf-F1u"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="qrcode" catalog="system"/>
+                                                <connections>
+                                                    <action selector="didTapScanner:" destination="yNj-G0-2LL" eventType="touchUpInside" id="0JA-Ef-xk5"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="mSH-1K-cHr" secondAttribute="trailing" constant="35" id="5CH-sb-fML"/>
                                             <constraint firstItem="Usm-ne-iQc" firstAttribute="centerX" secondItem="5VG-hP-ihG" secondAttribute="centerX" id="FBy-Ks-IN2"/>
                                             <constraint firstItem="If9-oL-MLf" firstAttribute="top" secondItem="o8E-mJ-wAI" secondAttribute="bottom" constant="44" id="Pdv-t9-pH4"/>
                                             <constraint firstAttribute="bottom" secondItem="If9-oL-MLf" secondAttribute="bottom" constant="36" id="anI-iY-sys"/>
                                             <constraint firstItem="o8E-mJ-wAI" firstAttribute="leading" secondItem="5VG-hP-ihG" secondAttribute="leading" constant="15" id="bGr-9O-1Mc"/>
+                                            <constraint firstItem="mSH-1K-cHr" firstAttribute="top" secondItem="5VG-hP-ihG" secondAttribute="top" constant="31" id="nEI-uG-VVH"/>
                                             <constraint firstAttribute="trailing" secondItem="o8E-mJ-wAI" secondAttribute="trailing" constant="15" id="sXF-4l-OnX"/>
                                             <constraint firstItem="Usm-ne-iQc" firstAttribute="top" secondItem="5VG-hP-ihG" secondAttribute="top" constant="32" id="u6a-iM-aGk"/>
                                             <constraint firstItem="If9-oL-MLf" firstAttribute="centerX" secondItem="5VG-hP-ihG" secondAttribute="centerX" id="uYJ-s8-2c9"/>
@@ -139,11 +154,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KHl-lC-3nE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="82.608695652173921" y="158.70535714285714"/>
+            <point key="canvasLocation" x="82.608695652173921" y="158.1521739130435"/>
         </scene>
     </scenes>
     <resources>
         <image name="Applogo" width="68" height="50.666667938232422"/>
+        <image name="qrcode" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
