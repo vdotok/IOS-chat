@@ -333,7 +333,8 @@ extension ChatScreenViewModelImpl {
         param["auth_token"] = user.authToken?.description
         param["type"] = "ftp"
         param["extension"] = fileExtension
-        let url = "https://q-tenant.vdotok.dev/s3upload/"
+        let splits = AuthenticationConstants.TENANTSERVER.split(separator:"/")
+        let url = "https://"+splits[1]+"/s3upload/"
         let request = MultipartFormDataRequest(url: URL(string: url)!,param: param,filePathKey: "uploadFile",imageDataKey: uploadData!,boundary: generateBoundaryString(),type:type)
         let task =  URLSession.shared.dataTask(with: request.asURLRequest()) { [self] data, response, error in
                 guard let data = data, error == nil else {
