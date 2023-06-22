@@ -16,6 +16,7 @@
 		49E166722A433BED000B828A /* QRScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666D2A433BED000B828A /* QRScannerViewModel.swift */; };
 		49E166732A433BED000B828A /* QRScannerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1666E2A433BED000B828A /* QRScannerRouter.swift */; };
 		49E166752A433C17000B828A /* AuthenticationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E166742A433C17000B828A /* AuthenticationModel.swift */; };
+		49E1667F2A4437AA000B828A /* vdotokCert.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 49E1667E2A4437AA000B828A /* vdotokCert.p12 */; };
 		5D11F24E265280820038F05F /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D11F249265280820038F05F /* Home.storyboard */; };
 		5D11F24F265280820038F05F /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11F24A265280820038F05F /* HomeRouter.swift */; };
 		5D11F250265280820038F05F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11F24B265280820038F05F /* HomeViewController.swift */; };
@@ -72,7 +73,6 @@
 		5D57CD6C2685E98500873AC2 /* DeleteGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57CD6B2685E98500873AC2 /* DeleteGroupService.swift */; };
 		5D57CD6E2685F29700873AC2 /* EditGroupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57CD6D2685F29700873AC2 /* EditGroupRequest.swift */; };
 		5D57CD702685F3CD00873AC2 /* EditGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57CD6F2685F3CD00873AC2 /* EditGroupService.swift */; };
-		5D57CD98268650BF00873AC2 /* vdotokCert.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 5D57CD97268650BF00873AC2 /* vdotokCert.p12 */; };
 		5D57DAC92642964700515FEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57DAC82642964700515FEA /* AppDelegate.swift */; };
 		5D57DACB2642964700515FEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57DACA2642964700515FEA /* SceneDelegate.swift */; };
 		5D57DACD2642964700515FEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57DACC2642964700515FEA /* ViewController.swift */; };
@@ -199,6 +199,7 @@
 		49E1666D2A433BED000B828A /* QRScannerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerViewModel.swift; sourceTree = "<group>"; };
 		49E1666E2A433BED000B828A /* QRScannerRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerRouter.swift; sourceTree = "<group>"; };
 		49E166742A433C17000B828A /* AuthenticationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationModel.swift; sourceTree = "<group>"; };
+		49E1667E2A4437AA000B828A /* vdotokCert.p12 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vdotokCert.p12; sourceTree = "<group>"; };
 		5D11F249265280820038F05F /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		5D11F24A265280820038F05F /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		5D11F24B265280820038F05F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -255,7 +256,6 @@
 		5D57CD6B2685E98500873AC2 /* DeleteGroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteGroupService.swift; sourceTree = "<group>"; };
 		5D57CD6D2685F29700873AC2 /* EditGroupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupRequest.swift; sourceTree = "<group>"; };
 		5D57CD6F2685F3CD00873AC2 /* EditGroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupService.swift; sourceTree = "<group>"; };
-		5D57CD97268650BF00873AC2 /* vdotokCert.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; name = vdotokCert.p12; path = Cert/vdotokCert.p12; sourceTree = SOURCE_ROOT; };
 		5D57DAC52642964700515FEA /* Chat-Demo-IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chat-Demo-IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D57DAC82642964700515FEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D57DACA2642964700515FEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -590,7 +590,7 @@
 		5D57DAC72642964700515FEA /* Chat-Demo-IOS */ = {
 			isa = PBXGroup;
 			children = (
-				5D57CD97268650BF00873AC2 /* vdotokCert.p12 */,
+				49E1667E2A4437AA000B828A /* vdotokCert.p12 */,
 				5D44E48C264481E8009F8123 /* Common */,
 				5D41C9172643454700D33DAA /* Model */,
 				5D41C912264343E300D33DAA /* Translation */,
@@ -880,7 +880,6 @@
 				5DDC5C4E2656617600663338 /* Poppins-Light.ttf in Resources */,
 				5D458CE026551BE300AC785D /* Inter-ExtraLight.ttf in Resources */,
 				5D6F4CE4265EE0C500E21E52 /* OutgoingAudioCell.xib in Resources */,
-				5D57CD98268650BF00873AC2 /* vdotokCert.p12 in Resources */,
 				5D41C94B2644677700D33DAA /* Groups.storyboard in Resources */,
 				5DA2BAB32656F7FA000772FC /* CreateGroupPopUp.xib in Resources */,
 				5D458CDF26551BE300AC785D /* Inter-Black.ttf in Resources */,
@@ -915,6 +914,7 @@
 				5DDC5C472656617600663338 /* Poppins-SemiBold.ttf in Resources */,
 				5D91F74E2665852200F12715 /* outgoingImageCell.xib in Resources */,
 				5D91F7462665557B00F12715 /* IncomingAttachmentCell.xib in Resources */,
+				49E1667F2A4437AA000B828A /* vdotokCert.p12 in Resources */,
 				5DDC5C4F2656617600663338 /* Poppins-ExtraLight.ttf in Resources */,
 				5D11F26626528D930038F05F /* Manrope-ExtraLight.ttf in Resources */,
 				5D458CE226551BE300AC785D /* Inter-Medium.ttf in Resources */,
