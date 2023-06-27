@@ -23,6 +23,7 @@ protocol ContactViewModel: ContactViewModelInput {
     var client: ChatClient? {get set}
     func viewModelDidLoad()
     func viewModelWillAppear()
+    func getUsersReload()
     func rowsCount() -> Int
     func viewModelItem(row: Int) -> User
     func filterGroups(with text: String)
@@ -51,6 +52,10 @@ class ContactViewModelImpl: ContactViewModel, ContactViewModelInput {
     
     func viewModelWillAppear() {
         
+    }
+    
+    func getUsersReload(){
+        getUsers()
     }
 
     

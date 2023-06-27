@@ -210,7 +210,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         let edit = UIContextualAction(style: .normal,
                                          title: "Edit") { [weak self] (action, view, completionHandler) in
             self?.selectedGroupId = indexPath.row
-            self?.loadGroupView()
+            self?.loadGroupView(groupName: self!.viewModel.groups[indexPath.row].groupTitle)
                                             completionHandler(true)
         }
         let trash = UIContextualAction(style: .destructive,
@@ -245,11 +245,12 @@ extension GroupsViewController: UISearchBarDelegate {
 }
 
 extension GroupsViewController {
-    func loadGroupView() {
+    func loadGroupView(groupName:String) {
         let vc = CreateGroupPopUp()
         vc.modalPresentationStyle = .custom
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true, completion: nil)
+        vc.titleTextField.text = groupName
         vc.delegate = self
         blurView.isHidden = false
     }
