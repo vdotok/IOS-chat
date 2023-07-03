@@ -64,6 +64,8 @@ public class GroupsViewController: UIViewController {
         let viewController = LoginBuilder().build(with: self.navigationController)
         viewController.modalPresentationStyle = .fullScreen
         viewModel.mqttClient?.disConnect()
+        UserDefaults.standard.removeObject(forKey: "projectId")
+        UserDefaults.standard.removeObject(forKey: "baseUrl")
         self.navigationController?.present(viewController, animated: true, completion: nil)
     }
     
