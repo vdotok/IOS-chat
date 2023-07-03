@@ -16,7 +16,7 @@ public class ContactViewController: UIViewController {
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
     let navigationTitle = UILabel()
-    
+    lazy var refreshControl = UIRefreshControl()
     
     var viewModel: ContactViewModel!
     
@@ -53,6 +53,7 @@ public class ContactViewController: UIViewController {
                     ProgressHud.showError(message: message, viewController: self)
                 }
             case .reload:
+                self.refreshControl.endRefreshing()
                 tableView.reloadData()
             case .groupCreated(group: let group, isExit: let isExist):
                 moveToChat(group: group, isExist: isExist)
@@ -102,6 +103,13 @@ extension ContactViewController {
         self.navigationItem.leftBarButtonItems = [leftItem2,leftItem]
         registerCell()
         configureNavigation()
+        refreshControl.attributedTitle = NSAttributedString(string: "")
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+     }
+    
+    @objc func refresh() {
+        viewModel.getUsersReload()
     }
     
     private func registerCell() {

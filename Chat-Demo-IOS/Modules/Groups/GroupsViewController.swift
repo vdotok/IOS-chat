@@ -64,6 +64,8 @@ public class GroupsViewController: UIViewController {
         let viewController = LoginBuilder().build(with: self.navigationController)
         viewController.modalPresentationStyle = .fullScreen
         viewModel.mqttClient?.disConnect()
+        UserDefaults.standard.removeObject(forKey: "projectId")
+        UserDefaults.standard.removeObject(forKey: "baseUrl")
         self.navigationController?.present(viewController, animated: true, completion: nil)
     }
     
@@ -210,7 +212,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
         let edit = UIContextualAction(style: .normal,
                                          title: "Edit") { [weak self] (action, view, completionHandler) in
             self?.selectedGroupId = indexPath.row
-            self?.loadGroupView()
+            self?.loadGroupView(groupName: self!.viewModel.groups[indexPath.row].groupTitle)
                                             completionHandler(true)
         }
         let trash = UIContextualAction(style: .destructive,
@@ -245,11 +247,12 @@ extension GroupsViewController: UISearchBarDelegate {
 }
 
 extension GroupsViewController {
-    func loadGroupView() {
+    func loadGroupView(groupName:String) {
         let vc = CreateGroupPopUp()
         vc.modalPresentationStyle = .custom
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true, completion: nil)
+        vc.titleTextField.text = groupName
         vc.delegate = self
         blurView.isHidden = false
     }

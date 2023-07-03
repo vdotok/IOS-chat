@@ -26,6 +26,7 @@ protocol CreateGroupViewModel: CreateGroupViewModelInput {
     var client: ChatClient {get set}
     func viewModelDidLoad()
     func viewModelWillAppear()
+    func getUsersReload()
     func rowsCount() -> Int
     func viewModelItem(row: Int) -> User
     func filterGroups(with text: String)
@@ -60,6 +61,10 @@ class CreateGroupViewModelImpl: CreateGroupViewModel, CreateGroupViewModelInput 
     
     func viewModelWillAppear() {
         
+    }
+    
+    func getUsersReload() {
+        getUsers()
     }
     
     //For all of your viewBindings
