@@ -156,6 +156,7 @@
 		5DFE71E02642AE4000F22B66 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFE71DB2642AE4000F22B66 /* SignUpViewController.swift */; };
 		5DFE71E12642AE4000F22B66 /* SignUpBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFE71DC2642AE4000F22B66 /* SignUpBuilder.swift */; };
 		5DFE71E22642AE4000F22B66 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFE71DD2642AE4000F22B66 /* SignUpViewModel.swift */; };
+		D1470F1B9027E68D5D3A871D /* Pods_Chat_Demo_IOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91B738D545A6720E6A53FB8 /* Pods_Chat_Demo_IOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +190,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		073934ECDE11EE01A29C5ABD /* Pods-Chat-Demo-IOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chat-Demo-IOS.debug.xcconfig"; path = "Target Support Files/Pods-Chat-Demo-IOS/Pods-Chat-Demo-IOS.debug.xcconfig"; sourceTree = "<group>"; };
 		0F2D2B44298BB1A700E2559A /* MultipartFormDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormDataRequest.swift; sourceTree = "<group>"; };
 		18D01BCF2685A64200DE549A /* Swift+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Swift+Extensions.swift"; sourceTree = "<group>"; };
 		18D01BF52686145B00DE549A /* MqttClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MqttClient.xcodeproj; path = "../../../chatsdk-ios/MqttClient.xcodeproj"; sourceTree = "<group>"; };
@@ -341,6 +343,8 @@
 		5DFE71DB2642AE4000F22B66 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		5DFE71DC2642AE4000F22B66 /* SignUpBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpBuilder.swift; sourceTree = "<group>"; };
 		5DFE71DD2642AE4000F22B66 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		C7E0118DDDCB92450A1126A9 /* Pods-Chat-Demo-IOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chat-Demo-IOS.release.xcconfig"; path = "Target Support Files/Pods-Chat-Demo-IOS/Pods-Chat-Demo-IOS.release.xcconfig"; sourceTree = "<group>"; };
+		D91B738D545A6720E6A53FB8 /* Pods_Chat_Demo_IOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chat_Demo_IOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1470F1B9027E68D5D3A871D /* Pods_Chat_Demo_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,6 +581,7 @@
 				5D57DAC62642964700515FEA /* Products */,
 				E1E9DC5D5EB54924F74CB46E /* Pods */,
 				5D57CD8726860DEF00873AC2 /* Recovered References */,
+				7F08F8CA6297218019763D8A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -777,9 +783,19 @@
 			path = Signup;
 			sourceTree = "<group>";
 		};
+		7F08F8CA6297218019763D8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D91B738D545A6720E6A53FB8 /* Pods_Chat_Demo_IOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E1E9DC5D5EB54924F74CB46E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				073934ECDE11EE01A29C5ABD /* Pods-Chat-Demo-IOS.debug.xcconfig */,
+				C7E0118DDDCB92450A1126A9 /* Pods-Chat-Demo-IOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -791,11 +807,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D57DAD92642964800515FEA /* Build configuration list for PBXNativeTarget "Chat-Demo-IOS" */;
 			buildPhases = (
+				33ED6B627D68183BC24F8551 /* [CP] Check Pods Manifest.lock */,
 				7E24FF2FF7FB3EAC8F6D902C /* Binary Libraries Compiler */,
 				5D57DAC12642964700515FEA /* Sources */,
 				5D57DAC22642964700515FEA /* Frameworks */,
 				5D57DAC32642964700515FEA /* Resources */,
 				5D57CDA62686530F00873AC2 /* Embed Frameworks */,
+				29C17AF970010C0B05BEDF20 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -925,6 +943,45 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		29C17AF970010C0B05BEDF20 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chat-Demo-IOS/Pods-Chat-Demo-IOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chat-Demo-IOS/Pods-Chat-Demo-IOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chat-Demo-IOS/Pods-Chat-Demo-IOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		33ED6B627D68183BC24F8551 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Chat-Demo-IOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7E24FF2FF7FB3EAC8F6D902C /* Binary Libraries Compiler */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1190,11 +1247,12 @@
 		};
 		5D57DADA2642964800515FEA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 073934ECDE11EE01A29C5ABD /* Pods-Chat-Demo-IOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1208,6 +1266,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vdotok.ios.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1216,11 +1275,12 @@
 		};
 		5D57DADB2642964800515FEA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7E0118DDDCB92450A1126A9 /* Pods-Chat-Demo-IOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1234,6 +1294,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vdotok.ios.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
